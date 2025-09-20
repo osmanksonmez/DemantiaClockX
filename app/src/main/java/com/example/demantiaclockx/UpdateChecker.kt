@@ -29,8 +29,8 @@ class UpdateChecker(private val context: Context) {
     
     companion object {
         private const val TAG = "UpdateChecker"
-        // GitHub repository bilgileri - gerçek repository bilgilerinizle değiştirin
-        private const val GITHUB_OWNER = "your-username"  // GitHub kullanıcı adınız
+        // GitHub repository bilgileri
+        private const val GITHUB_OWNER = "osmanksonmez"  // GitHub kullanıcı adınız
         private const val GITHUB_REPO = "DemantiaClockX"  // Repository adı
         private const val GITHUB_API_URL = "https://api.github.com/repos/$GITHUB_OWNER/$GITHUB_REPO/releases/latest"
     }
