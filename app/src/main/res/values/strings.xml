@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">DemantiaClockX</string>
+    <string name="toggle_clock">Analog / Dijital</string>
+    <string name="morning">Sabah</string>
+    <string name="noon">Öğle</string>
+    <string name="afternoon">İkindi</string>
+    <string name="evening">Akşam</string>
+    <string name="night">Gece</string>
+</resources>

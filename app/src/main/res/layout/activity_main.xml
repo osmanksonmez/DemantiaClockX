@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:keepScreenOn="true"
+    android:background="@color/background_blue">
+
+    <!-- Sağ taraf buton container - dikey yerleşim -->
+    <LinearLayout
+        android:id="@+id/buttonContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <!-- Settings butonu -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSettings"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_marginBottom="8dp"
+            android:text=""
+            android:clickable="true"
+            android:focusable="true"
+            app:icon="@drawable/ic_settings"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:iconSize="24dp"
+            app:backgroundTint="@color/button_white"
+            app:iconTint="@color/primary_blue"
+            android:elevation="8dp"
+            app:elevation="8dp"
+            style="@style/Widget.Material3.Button.IconButton" />
+
+        <!-- Geçiş butonu -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnToggle"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_marginBottom="8dp"
+            android:text=""
+            android:clickable="true"
+            android:focusable="true"
+            app:icon="@android:drawable/ic_menu_rotate"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:iconSize="24dp"
+            app:backgroundTint="@color/button_white"
+            app:iconTint="@color/primary_blue"
+            android:elevation="8dp"
+            app:elevation="8dp"
+            style="@style/Widget.Material3.Button.IconButton" />
+
+        <!-- Test butonu -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnTest"
+            style="@style/Widget.Material3.Button.IconButton"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:clickable="true"
+            android:elevation="8dp"
+            android:focusable="true"
+            android:text=""
+            android:visibility="gone"
+            app:backgroundTint="@color/button_white"
+            app:elevation="8dp"
+            app:icon="@android:drawable/ic_menu_info_details"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:iconSize="24dp"
+            app:iconTint="@color/primary_blue" />
+
+    </LinearLayout>
+
+    <!-- Ana container - analog saat ve dijital elementler için -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_toStartOf="@id/buttonContainer"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:padding="@dimen/margin_medium"
+        android:layout_marginEnd="8dp">
+
+        <!-- Sol taraf - Analog saat -->
+        <com.example.demantiaclockx.CustomAnalogClock
+            android:id="@+id/analogClock"
+            android:layout_width="0dp"
+            android:layout_height="300dp"
+            android:layout_weight="1"
+            android:visibility="gone"
+            android:layout_margin="16dp" />
+
+        <!-- Sağ taraf - Dijital elementler -->
+        <LinearLayout
+            android:id="@+id/digitalLayout"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center_horizontal|top"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="16dp">
+
+            <!-- 1. tvDate - Haftanın günü -->
+            <TextView
+                android:id="@+id/tvDate"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="Cuma"
+                android:textSize="@dimen/text_size_day_large"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:gravity="center"
+                app:autoSizeTextType="uniform"
+                app:autoSizeMinTextSize="24sp"
+                app:autoSizeMaxTextSize="64sp" />
+
+            <!-- 2. tvTimeOfDay - Günün saati -->
+            <TextView
+                android:id="@+id/tvTimeOfDay"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="gece"
+                android:textSize="@dimen/text_size_period_large"
+                android:textColor="@android:color/white"
+                android:gravity="center"
+                app:autoSizeTextType="uniform"
+                app:autoSizeMinTextSize="18sp"
+                app:autoSizeMaxTextSize="42sp" />
+
+            <!-- 3. Saat ve Tarih - Aynı satırda -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <!-- tvTime - Saat -->
+                <TextView
+                    android:id="@+id/tvTime"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="02:15"
+                    android:textSize="@dimen/text_size_time_large"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:layout_marginEnd="8dp"
+                    app:autoSizeTextType="uniform"
+                    app:autoSizeMinTextSize="32sp"
+                    app:autoSizeMaxTextSize="72sp" />
+
+                <!-- tvDate2 - Tarih -->
+                <TextView
+                    android:id="@+id/tvDate2"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="15 Kasım 2024"
+                    android:textSize="@dimen/text_size_date_large"
+                    android:textColor="@android:color/white"
+                    android:gravity="center"
+                    android:layout_marginStart="8dp"
+                    app:autoSizeTextType="uniform"
+                    app:autoSizeMinTextSize="18sp"
+                    app:autoSizeMaxTextSize="36sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Analog elementler - başlangıçta gizli -->
+        <LinearLayout
+            android:id="@+id/analogElements"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="16dp"
+            android:visibility="gone">
+
+            <!-- 1. tvDateAnalog - Haftanın günü (Analog) -->
+            <TextView
+                android:id="@+id/tvDateAnalog"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="Cuma"
+                android:textSize="@dimen/text_size_day_large"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:gravity="center"
+                app:autoSizeTextType="uniform"
+                app:autoSizeMinTextSize="24sp"
+                app:autoSizeMaxTextSize="64sp" />
+
+            <!-- 2. tvTimeOfDayAnalog - Günün saati (Analog) -->
+            <TextView
+                android:id="@+id/tvTimeOfDayAnalog"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="gece"
+                android:textSize="@dimen/text_size_period_large"
+                android:textColor="@android:color/white"
+                android:gravity="center"
+                app:autoSizeTextType="uniform"
+                app:autoSizeMinTextSize="18sp"
+                app:autoSizeMaxTextSize="42sp" />
+
+            <!-- 3. tvTimeAnalog - Saat (Analog) -->
+            <TextView
+                android:id="@+id/tvTimeAnalog"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="02:15"
+                android:textSize="@dimen/text_size_time_large"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:gravity="center"
+                app:autoSizeTextType="uniform"
+                app:autoSizeMinTextSize="28sp"
+                app:autoSizeMaxTextSize="56sp" />
+
+            <!-- 4. tvDate2Analog - Tarih (Analog) -->
+            <TextView
+                android:id="@+id/tvDate2Analog"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="15 Kasım 2024"
+                android:textSize="@dimen/text_size_date_large"
+                android:textColor="@android:color/white"
+                android:gravity="center"
+                app:autoSizeTextType="uniform"
+                app:autoSizeMinTextSize="14sp"
+                app:autoSizeMaxTextSize="28sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

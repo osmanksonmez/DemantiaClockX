@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Text sizes for small/split screens -->
+    <dimen name="text_size_day_large">48sp</dimen>
+    <dimen name="text_size_period_large">32sp</dimen>
+    <dimen name="text_size_time_large">42sp</dimen>
+    <dimen name="text_size_date_large">20sp</dimen>
+    
+    <!-- Smaller margins for compact screens -->
+    <dimen name="margin_small">8dp</dimen>
+    <dimen name="margin_medium">16dp</dimen>
+    <dimen name="margin_large">24dp</dimen>
+</resources>

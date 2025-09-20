@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Temel renkler - Yüksek kontrast -->
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    
+    <!-- Demans dostu ana renkler -->
+    <color name="primary_blue">#FF1565C0</color>        <!-- Koyu mavi - sakinleştirici -->
+    <color name="light_blue">#FF42A5F5</color>          <!-- Açık mavi - yumuşak -->
+    <color name="navy_blue">#FF0D47A1</color>           <!-- Lacivert - güçlü kontrast -->
+    
+    <!-- Arka plan renkleri -->
+    <color name="background_dark">#FF000000</color>      <!-- Siyah arka plan -->
+    <color name="background_light">#FFFFFFFF</color>     <!-- Beyaz arka plan -->
+    <color name="background_blue">#FF0D47A1</color>      <!-- Mavi arka plan -->
+    
+    <!-- Metin renkleri - Yüksek kontrast -->
+    <color name="text_white">#FFFFFFFF</color>          <!-- Beyaz metin -->
+    <color name="text_black">#FF000000</color>          <!-- Siyah metin -->
+    <color name="text_blue">#FF1565C0</color>           <!-- Mavi metin -->
+    
+    <!-- Vurgu renkleri -->
+    <color name="accent_yellow">#FFFFC107</color>       <!-- Sarı - dikkat çekici -->
+    <color name="accent_orange">#FFFF9800</color>       <!-- Turuncu - sıcak -->
+    
+    <!-- Buton renkleri -->
+    <color name="button_blue">#FF1565C0</color>         <!-- Mavi buton -->
+    <color name="button_blue_pressed">#FF0D47A1</color> <!-- Basılı mavi buton -->
+    <color name="button_white">#FFFFFFFF</color>        <!-- Beyaz buton -->
+    <color name="button_white_pressed">#FFE0E0E0</color><!-- Basılı beyaz buton -->
+    
+    <!-- Tema renkleri -->
+    <color name="theme_white_gray">#FFF5F5F5</color>    <!-- Beyaz/Gri tema -->
+    <color name="theme_light_blue">#FFE3F2FD</color>    <!-- Açık mavi tema -->
+    <color name="theme_light_yellow">#FFFFF9C4</color>  <!-- Açık sarı tema -->
+    <color name="theme_light_pink">#FFFCE4EC</color>    <!-- Açık pembe tema -->
+    <color name="theme_red">#FFD32F2F</color>           <!-- Kırmızı tema -->
+    <color name="theme_navy_blue">#FF0D47A1</color>     <!-- Navy blue tema -->
+    <color name="theme_black">#FF212121</color>         <!-- Siyah tema -->
+    
+    <!-- Metin renkleri - tema uyumlu -->
+    <color name="text_light">#FFFFFFFF</color>          <!-- Açık metin (koyu temalar için) -->
+    <color name="text_dark">#FF212121</color>           <!-- Koyu metin (açık temalar için) -->
+</resources>
