@@ -183,6 +183,20 @@
                     android:elevation="4dp"
                     app:cornerRadius="12dp" />
 
+                <!-- Açık Yeşil Tema -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnThemeLightGreen"
+                    android:layout_width="0dp"
+                    android:layout_height="70dp"
+                    android:layout_columnWeight="1"
+                    android:layout_margin="6dp"
+                    android:text="Açık Yeşil"
+                    android:textColor="@color/text_dark"
+                    android:textSize="14sp"
+                    app:backgroundTint="@color/theme_light_green"
+                    android:elevation="4dp"
+                    app:cornerRadius="12dp" />
+
                 <!-- Kırmızı Tema -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnThemeRed"

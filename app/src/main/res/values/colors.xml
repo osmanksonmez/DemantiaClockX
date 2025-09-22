@@ -34,6 +34,7 @@
     <color name="theme_light_blue">#FFE3F2FD</color>    <!-- Açık mavi tema -->
     <color name="theme_light_yellow">#FFFFF9C4</color>  <!-- Açık sarı tema -->
     <color name="theme_light_pink">#FFFCE4EC</color>    <!-- Açık pembe tema -->
+    <color name="theme_light_green">#FFE8F5E8</color>   <!-- Açık yeşil tema -->
     <color name="theme_red">#FFD32F2F</color>           <!-- Kırmızı tema -->
     <color name="theme_navy_blue">#FF0D47A1</color>     <!-- Navy blue tema -->
     <color name="theme_black">#FF212121</color>         <!-- Siyah tema -->

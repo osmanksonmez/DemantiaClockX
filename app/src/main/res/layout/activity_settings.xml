@@ -61,7 +61,9 @@
         android:layout_height="wrap_content"
         android:columnCount="2"
         android:rowCount="4"
-        android:layout_marginBottom="24dp">
+        android:layout_marginBottom="24dp"
+        android:alignmentMode="alignBounds"
+        android:useDefaultMargins="false">
 
         <!-- Beyaz/Gri Tema -->
         <com.google.android.material.button.MaterialButton
@@ -69,10 +71,10 @@
             android:layout_width="0dp"
             android:layout_height="80dp"
             android:layout_columnWeight="1"
-            android:layout_margin="8dp"
+            android:layout_margin="6dp"
             android:text="Beyaz/Gri"
             android:textColor="@color/text_dark"
-            android:textSize="16sp"
+            android:textSize="14sp"
             app:backgroundTint="@color/theme_white_gray"
             android:elevation="4dp"
             app:cornerRadius="12dp" />
@@ -83,10 +85,10 @@
             android:layout_width="0dp"
             android:layout_height="80dp"
             android:layout_columnWeight="1"
-            android:layout_margin="8dp"
+            android:layout_margin="6dp"
             android:text="Açık Mavi"
             android:textColor="@color/text_dark"
-            android:textSize="16sp"
+            android:textSize="14sp"
             app:backgroundTint="@color/theme_light_blue"
             android:elevation="4dp"
             app:cornerRadius="12dp" />
@@ -97,10 +99,10 @@
             android:layout_width="0dp"
             android:layout_height="80dp"
             android:layout_columnWeight="1"
-            android:layout_margin="8dp"
+            android:layout_margin="6dp"
             android:text="Açık Sarı"
             android:textColor="@color/text_dark"
-            android:textSize="16sp"
+            android:textSize="14sp"
             app:backgroundTint="@color/theme_light_yellow"
             android:elevation="4dp"
             app:cornerRadius="12dp" />
@@ -111,11 +113,25 @@
             android:layout_width="0dp"
             android:layout_height="80dp"
             android:layout_columnWeight="1"
-            android:layout_margin="8dp"
+            android:layout_margin="6dp"
             android:text="Açık Pembe"
             android:textColor="@color/text_dark"
-            android:textSize="16sp"
+            android:textSize="14sp"
             app:backgroundTint="@color/theme_light_pink"
+            android:elevation="4dp"
+            app:cornerRadius="12dp" />
+
+        <!-- Açık Yeşil Tema -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnThemeLightGreen"
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="6dp"
+            android:text="Açık Yeşil"
+            android:textColor="@color/text_dark"
+            android:textSize="14sp"
+            app:backgroundTint="@color/theme_light_green"
             android:elevation="4dp"
             app:cornerRadius="12dp" />
 
@@ -125,10 +141,10 @@
             android:layout_width="0dp"
             android:layout_height="80dp"
             android:layout_columnWeight="1"
-            android:layout_margin="8dp"
+            android:layout_margin="6dp"
             android:text="Kırmızı"
             android:textColor="@color/text_light"
-            android:textSize="16sp"
+            android:textSize="14sp"
             app:backgroundTint="@color/theme_red"
             android:elevation="4dp"
             app:cornerRadius="12dp" />
@@ -139,10 +155,10 @@
             android:layout_width="0dp"
             android:layout_height="80dp"
             android:layout_columnWeight="1"
-            android:layout_margin="8dp"
+            android:layout_margin="6dp"
             android:text="Navy Blue"
             android:textColor="@color/text_light"
-            android:textSize="16sp"
+            android:textSize="14sp"
             app:backgroundTint="@color/theme_navy_blue"
             android:elevation="4dp"
             app:cornerRadius="12dp" />
@@ -153,10 +169,10 @@
             android:layout_width="0dp"
             android:layout_height="80dp"
             android:layout_columnWeight="1"
-            android:layout_margin="8dp"
+            android:layout_margin="6dp"
             android:text="Siyah"
             android:textColor="@color/text_light"
-            android:textSize="16sp"
+            android:textSize="14sp"
             app:backgroundTint="@color/theme_black"
             android:elevation="4dp"
             app:cornerRadius="12dp" />

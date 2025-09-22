@@ -3,6 +3,7 @@ package com.example.demantiaclockx
 import android.content.Context
 import android.content.pm.PackageManager
 import android.util.Log
+import com.example.demantiaclockx.update.UpdateConfig
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
@@ -29,23 +30,20 @@ class UpdateChecker(private val context: Context) {
     
     companion object {
         private const val TAG = "UpdateChecker"
-        // GitHub repository bilgileri
-        private const val GITHUB_OWNER = "osmanksonmez"  // GitHub kullanıcı adınız
-        private const val GITHUB_REPO = "DemantiaClockX"  // Repository adı
-        private const val GITHUB_API_URL = "https://api.github.com/repos/$GITHUB_OWNER/$GITHUB_REPO/releases/latest"
     }
     
     suspend fun checkForUpdates(): UpdateResult = withContext(Dispatchers.IO) {
         try {
             Log.d(TAG, "Checking for updates from GitHub Releases...")
+            Log.d(TAG, "Repository: ${UpdateConfig.GITHUB_OWNER}/${UpdateConfig.GITHUB_REPO}")
             
             val currentVersion = getCurrentVersion()
             Log.d(TAG, "Current version: $currentVersion")
             
             val latestRelease = fetchLatestRelease()
             if (latestRelease == null) {
-                Log.w(TAG, "Could not fetch latest release")
-                return@withContext UpdateResult.Error("Güncelleme bilgisi alınamadı")
+                Log.w(TAG, "Could not fetch latest release - API call failed")
+                return@withContext UpdateResult.Error("GitHub'dan güncelleme bilgisi alınamadı. İnternet bağlantınızı kontrol edin.")
             }
             
             val latestVersion = latestRelease.getString("tag_name").removePrefix("v")
@@ -57,13 +55,14 @@ class UpdateChecker(private val context: Context) {
             
             if (downloadUrl.isEmpty()) {
                 Log.w(TAG, "No APK download URL found in release")
-                return@withContext UpdateResult.Error("APK dosyası bulunamadı")
+                return@withContext UpdateResult.Error("Güncelleme dosyası bulunamadı")
             }
             
             val isNewer = isVersionNewer(currentVersion, latestVersion)
-            Log.d(TAG, "Is newer version available: $isNewer")
+            Log.d(TAG, "Version comparison - Current: $currentVersion, Latest: $latestVersion, Is newer: $isNewer")
             
             if (isNewer) {
+                Log.i(TAG, "New version available: $latestVersion")
                 val updateInfo = UpdateInfo(
                     version = latestVersion,
                     downloadUrl = downloadUrl,
@@ -72,12 +71,13 @@ class UpdateChecker(private val context: Context) {
                 )
                 UpdateResult.Available(updateInfo)
             } else {
+                Log.i(TAG, "No update needed - current version is up to date")
                 UpdateResult.NoUpdate
             }
             
         } catch (e: Exception) {
-            Log.e(TAG, "Error checking for updates", e)
-            UpdateResult.Error("Güncelleme kontrolü başarısız: ${e.message}")
+            Log.e(TAG, "Error checking for updates: ${e.message}", e)
+            UpdateResult.Error("Güncelleme kontrolü başarısız: ${e.localizedMessage ?: e.message}")
         }
     }
     
@@ -93,29 +93,84 @@ class UpdateChecker(private val context: Context) {
     
     private fun fetchLatestRelease(): JSONObject? {
         return try {
-            val url = URL(GITHUB_API_URL)
+            val apiUrl = UpdateConfig.getReleasesApiUrl()
+            Log.d(TAG, "=== GitHub API Request Debug ===")
+            Log.d(TAG, "API URL: $apiUrl")
+            Log.d(TAG, "User-Agent: ${UpdateConfig.USER_AGENT}")
+            Log.d(TAG, "Connect Timeout: ${UpdateConfig.CONNECT_TIMEOUT}ms")
+            Log.d(TAG, "Read Timeout: ${UpdateConfig.READ_TIMEOUT}ms")
+            
+            val url = URL(apiUrl)
+            Log.d(TAG, "URL object created successfully")
+            
             val connection = url.openConnection() as HttpURLConnection
+            Log.d(TAG, "HTTP connection opened")
+            
             connection.requestMethod = "GET"
             connection.setRequestProperty("Accept", "application/vnd.github.v3+json")
-            connection.connectTimeout = 10000
-            connection.readTimeout = 10000
+            connection.setRequestProperty("User-Agent", UpdateConfig.USER_AGENT)
+            connection.connectTimeout = UpdateConfig.CONNECT_TIMEOUT
+            connection.readTimeout = UpdateConfig.READ_TIMEOUT
             
+            Log.d(TAG, "Request properties set, attempting connection...")
             val responseCode = connection.responseCode
             Log.d(TAG, "GitHub API response code: $responseCode")
+            Log.d(TAG, "Response message: ${connection.responseMessage}")
             
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 val reader = BufferedReader(InputStreamReader(connection.inputStream))
                 val response = reader.readText()
                 reader.close()
                 
-                Log.d(TAG, "GitHub API response received")
+                Log.d(TAG, "GitHub API response received successfully")
+                Log.d(TAG, "Response length: ${response.length} characters")
                 JSONObject(response)
             } else {
-                Log.w(TAG, "GitHub API request failed with code: $responseCode")
+                // Read error response for better debugging
+                val errorStream = connection.errorStream
+                val errorMessage = if (errorStream != null) {
+                    BufferedReader(InputStreamReader(errorStream)).readText()
+                } else {
+                    "No error details available"
+                }
+                
+                Log.e(TAG, "GitHub API request failed with code: $responseCode")
+                Log.e(TAG, "Error response: $errorMessage")
+                
+                when (responseCode) {
+                    HttpURLConnection.HTTP_NOT_FOUND -> {
+                        Log.e(TAG, "Repository or releases not found (404). Check if repository exists and has releases.")
+                    }
+                    HttpURLConnection.HTTP_FORBIDDEN -> {
+                        Log.e(TAG, "Access forbidden (403). Repository might be private or rate limit exceeded.")
+                    }
+                    HttpURLConnection.HTTP_UNAUTHORIZED -> {
+                        Log.e(TAG, "Unauthorized access (401). Authentication might be required.")
+                    }
+                }
                 null
             }
         } catch (e: Exception) {
-            Log.e(TAG, "Error fetching latest release", e)
+            Log.e(TAG, "=== GitHub API Error Debug ===")
+            Log.e(TAG, "Exception type: ${e.javaClass.simpleName}")
+            Log.e(TAG, "Exception message: ${e.message}")
+            Log.e(TAG, "Full exception:", e)
+            
+            // Check if it's a network-related exception
+            when (e) {
+                is java.net.UnknownHostException -> {
+                    Log.e(TAG, "Network error: Unable to resolve hostname")
+                }
+                is java.net.ConnectException -> {
+                    Log.e(TAG, "Network error: Connection failed")
+                }
+                is java.net.SocketTimeoutException -> {
+                    Log.e(TAG, "Network error: Connection timeout")
+                }
+                is java.io.IOException -> {
+                    Log.e(TAG, "IO error: ${e.message}")
+                }
+            }
             null
         }
     }

@@ -55,6 +55,7 @@ class SettingsActivity : AppCompatActivity() {
         binding.btnThemeLightBlue.setOnClickListener { selectTheme("light_blue") }
         binding.btnThemeLightYellow.setOnClickListener { selectTheme("light_yellow") }
         binding.btnThemeLightPink.setOnClickListener { selectTheme("light_pink") }
+        binding.btnThemeLightGreen?.setOnClickListener { selectTheme("light_green") }
         binding.btnThemeRed.setOnClickListener { selectTheme("red") }
         binding.btnThemeNavyBlue.setOnClickListener { selectTheme("navy_blue") }
         binding.btnThemeBlack.setOnClickListener { selectTheme("black") }
@@ -98,6 +99,7 @@ class SettingsActivity : AppCompatActivity() {
             "light_blue" -> binding.btnThemeLightBlue.alpha = 0.7f
             "light_yellow" -> binding.btnThemeLightYellow.alpha = 0.7f
             "light_pink" -> binding.btnThemeLightPink.alpha = 0.7f
+            "light_green" -> binding.btnThemeLightGreen?.let { it.alpha = 0.7f }
             "red" -> binding.btnThemeRed.alpha = 0.7f
             "navy_blue" -> binding.btnThemeNavyBlue.alpha = 0.7f
             "black" -> binding.btnThemeBlack.alpha = 0.7f
@@ -109,6 +111,7 @@ class SettingsActivity : AppCompatActivity() {
         binding.btnThemeLightBlue.alpha = 1.0f
         binding.btnThemeLightYellow.alpha = 1.0f
         binding.btnThemeLightPink.alpha = 1.0f
+        binding.btnThemeLightGreen?.let { it.alpha = 1.0f }
         binding.btnThemeRed.alpha = 1.0f
         binding.btnThemeNavyBlue.alpha = 1.0f
         binding.btnThemeBlack.alpha = 1.0f
@@ -135,6 +138,11 @@ class SettingsActivity : AppCompatActivity() {
             }
             "light_pink" -> {
                 binding.root.setBackgroundColor(ContextCompat.getColor(this, R.color.theme_light_pink))
+                binding.tvTitle.setTextColor(ContextCompat.getColor(this, R.color.text_dark))
+                binding.tvThemeTitle.setTextColor(ContextCompat.getColor(this, R.color.text_dark))
+            }
+            "light_green" -> {
+                binding.root.setBackgroundColor(ContextCompat.getColor(this, R.color.theme_light_green))
                 binding.tvTitle.setTextColor(ContextCompat.getColor(this, R.color.text_dark))
                 binding.tvThemeTitle.setTextColor(ContextCompat.getColor(this, R.color.text_dark))
             }

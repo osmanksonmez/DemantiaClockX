@@ -3,15 +3,11 @@ package com.example.demantiaclockx.update
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
+import com.example.demantiaclockx.UpdateChecker
+import com.example.demantiaclockx.UpdateResult
+import com.example.demantiaclockx.UpdateInfo
 import kotlinx.coroutines.*
 import java.io.File
-
-data class UpdateInfo(
-    val version: String,
-    val downloadUrl: String,
-    val releaseNotes: String,
-    val fileSize: Long
-)
 
 class UpdateManager(private val context: Context) {
     
@@ -154,24 +150,19 @@ class UpdateManager(private val context: Context) {
      */
     private fun handleUpdateResult(result: UpdateResult, isManual: Boolean) {
         when (result) {
-            is UpdateResult.UpdateAvailable -> {
-                Log.d(TAG, "Güncelleme mevcut: ${result.latestVersion}")
+            is UpdateResult.Available -> {
+                Log.d(TAG, "Güncelleme mevcut: ${result.updateInfo.version}")
                 notificationManager.showUpdateAvailableNotification(
-                    result.latestVersion,
-                    result.releaseNotes
+                    result.updateInfo.version,
+                    result.updateInfo.releaseNotes
                 ) {
                     // Güncelleme butonuna tıklandığında
                     CoroutineScope(Dispatchers.IO).launch {
-                        downloadAndInstallUpdate(UpdateInfo(
-                            version = result.latestVersion,
-                            downloadUrl = result.downloadUrl,
-                            releaseNotes = result.releaseNotes,
-                            fileSize = result.fileSize
-                        ))
+                        downloadAndInstallUpdate(result.updateInfo)
                     }
                 }
             }
-            is UpdateResult.UpToDate -> {
+            is UpdateResult.NoUpdate -> {
                 Log.d(TAG, "Uygulama güncel")
                 if (isManual) {
                     // Manuel kontrolde kullanıcıya bilgi ver
