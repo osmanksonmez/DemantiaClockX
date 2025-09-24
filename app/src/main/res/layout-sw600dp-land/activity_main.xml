@@ -64,6 +64,7 @@
             style="@style/Widget.Material3.Button.IconButton"
             android:layout_width="56dp"
             android:layout_height="56dp"
+            android:layout_marginBottom="8dp"
             android:clickable="true"
             android:elevation="8dp"
             android:focusable="true"
@@ -72,6 +73,25 @@
             app:backgroundTint="@color/button_white"
             app:elevation="8dp"
             app:icon="@android:drawable/ic_menu_send"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:iconSize="24dp"
+            app:iconTint="@color/primary_blue" />
+
+        <!-- Update Test butonu -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnUpdateTest"
+            style="@style/Widget.Material3.Button.IconButton"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_marginBottom="8dp"
+            android:clickable="true"
+            android:elevation="8dp"
+            android:focusable="true"
+            android:text=""
+            app:backgroundTint="@color/button_white"
+            app:elevation="8dp"
+            app:icon="@android:drawable/stat_sys_download"
             app:iconGravity="textStart"
             app:iconPadding="0dp"
             app:iconSize="24dp"
