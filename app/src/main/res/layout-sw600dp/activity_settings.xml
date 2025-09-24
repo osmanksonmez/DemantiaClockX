@@ -227,18 +227,6 @@
             app:cornerRadius="8dp"
             android:elevation="4dp" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnForceUpdate"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_weight="1"
-            android:layout_marginStart="8dp"
-            android:text="Zorla Güncelle"
-            android:textSize="12sp"
-            app:backgroundTint="@color/accent_orange"
-            app:cornerRadius="8dp"
-            android:elevation="4dp" />
-
     </LinearLayout>
 
     <!-- Otomatik Güncelleme Switch -->
@@ -264,71 +252,6 @@
             android:checked="true" />
 
     </LinearLayout>
-
-    <!-- Debug Logları Bölümü -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Debug Logları"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:textColor="@color/text_dark"
-        android:layout_marginBottom="12dp" />
-
-    <!-- Debug Log Butonları -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="12dp">
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnShowLogs"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_weight="1"
-            android:layout_marginEnd="8dp"
-            android:text="Logları Göster"
-            android:textSize="12sp"
-            app:backgroundTint="@color/theme_light_green"
-            app:cornerRadius="8dp"
-            android:elevation="4dp" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnClearLogs"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_weight="1"
-            android:layout_marginStart="8dp"
-            android:text="Logları Temizle"
-            android:textSize="12sp"
-            app:backgroundTint="@color/theme_red"
-            app:cornerRadius="8dp"
-            android:elevation="4dp" />
-
-    </LinearLayout>
-
-    <!-- Log Görüntüleme Alanı -->
-    <ScrollView
-        android:id="@+id/scrollViewLogs"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_marginBottom="16dp"
-        android:background="@android:color/black"
-        android:padding="8dp"
-        android:visibility="gone">
-
-        <TextView
-            android:id="@+id/tvLogs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textColor="@android:color/white"
-            android:textSize="10sp"
-            android:fontFamily="monospace"
-            android:textIsSelectable="true" />
-
-    </ScrollView>
 
 </LinearLayout>
 

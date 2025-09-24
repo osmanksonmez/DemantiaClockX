@@ -6,7 +6,6 @@ import android.util.Log
 import com.example.demantiaclockx.UpdateChecker
 import com.example.demantiaclockx.UpdateResult
 import com.example.demantiaclockx.UpdateInfo
-import com.example.demantiaclockx.SettingsActivity
 import kotlinx.coroutines.*
 import java.io.File
 
@@ -42,16 +41,13 @@ class UpdateManager(private val context: Context) {
      */
     suspend fun checkForUpdatesManually(): UpdateResult {
         Log.d(TAG, "Manuel güncelleme kontrolü başlatıldı")
-        SettingsActivity.writeDebugLog(context, "Manuel güncelleme kontrolü başlatıldı")
         
         return try {
             val result = updateChecker.checkForUpdates()
-            SettingsActivity.writeDebugLog(context, "Güncelleme kontrolü sonucu: $result")
             handleUpdateResult(result, isManual = true)
             result
         } catch (e: Exception) {
             Log.e(TAG, "Manuel güncelleme kontrolü hatası", e)
-            SettingsActivity.writeDebugLog(context, "Manuel güncelleme kontrolü hatası: ${e.message}")
             val errorResult = UpdateResult.Error("Güncelleme kontrolü başarısız: ${e.message}")
             notificationManager.showUpdateCheckFailedNotification(errorResult.message)
             errorResult
@@ -64,20 +60,16 @@ class UpdateManager(private val context: Context) {
     fun startPeriodicUpdateCheck() {
         if (!isAutoUpdateEnabled()) {
             Log.d(TAG, "Otomatik güncelleme devre dışı")
-            SettingsActivity.writeDebugLog(context, "Otomatik güncelleme devre dışı")
             return
         }
         
-        SettingsActivity.writeDebugLog(context, "Periyodik güncelleme kontrolü başlatıldı")
         updateJob?.cancel()
         updateJob = CoroutineScope(Dispatchers.IO).launch {
             while (isActive) {
                 try {
                     if (shouldCheckForUpdates()) {
                         Log.d(TAG, "Otomatik güncelleme kontrolü başlatıldı")
-                        SettingsActivity.writeDebugLog(context, "Otomatik güncelleme kontrolü başlatıldı")
                         val result = updateChecker.checkForUpdates()
-                        SettingsActivity.writeDebugLog(context, "Otomatik güncelleme sonucu: $result")
                         handleUpdateResult(result, isManual = false)
                         updateLastCheckTime()
                     }
@@ -87,7 +79,6 @@ class UpdateManager(private val context: Context) {
                     
                 } catch (e: Exception) {
                     Log.e(TAG, "Otomatik güncelleme kontrolü hatası", e)
-                    SettingsActivity.writeDebugLog(context, "Otomatik güncelleme kontrolü hatası: ${e.message}")
                     delay(60 * 60 * 1000L) // Hata durumunda da 1 saat bekle
                 }
             }
@@ -99,15 +90,12 @@ class UpdateManager(private val context: Context) {
      */
     suspend fun downloadAndInstallUpdate(updateInfo: UpdateInfo): Boolean {
         Log.d(TAG, "downloadAndInstallUpdate() called for version: ${updateInfo.version}")
-        Log.d(TAG, "Download URL: ${updateInfo.downloadUrl}")
-        SettingsActivity.writeDebugLog(context, "Güncelleme indirme başlatıldı: ${updateInfo.version}")
-        SettingsActivity.writeDebugLog(context, "İndirme URL'si: ${updateInfo.downloadUrl}")
+        Log.d(TAG, "Güncelleme indiriliyor: ${updateInfo.version}")
         
         return withContext(Dispatchers.IO) {
             try {
                 Log.d(TAG, "Starting download in IO context...")
                 Log.d(TAG, "Güncelleme indiriliyor: ${updateInfo.version}")
-                SettingsActivity.writeDebugLog(context, "IO context'te indirme başlatıldı")
                 
                 // APK'yı indir
                 val downloadResult = updateDownloader.downloadAndInstall(
@@ -118,25 +106,21 @@ class UpdateManager(private val context: Context) {
                 when (downloadResult) {
                     is DownloadResult.Success -> {
                         Log.d(TAG, "APK başarıyla indirildi: ${downloadResult.apkFile.absolutePath}")
-                        SettingsActivity.writeDebugLog(context, "APK başarıyla indirildi: ${downloadResult.apkFile.absolutePath}")
                         
                         // Güvenlik kontrolü yap
                         val securityResult = securityManager.verifyApkSecurity(downloadResult.apkFile)
                         when (securityResult) {
                             is SecurityCheckResult.Passed -> {
                                 Log.d(TAG, "APK güvenlik kontrolü başarılı")
-                                SettingsActivity.writeDebugLog(context, "APK güvenlik kontrolü başarılı")
                                 
                                 // Kurulumu başlat
                                 updateDownloader.installApk(downloadResult.apkFile)
                                 Log.d(TAG, "APK kurulum başlatıldı")
-                                SettingsActivity.writeDebugLog(context, "APK kurulum başlatıldı")
                                 notificationManager.showUpdateSuccessNotification(updateInfo.version)
                                 return@withContext true
                             }
                             is SecurityCheckResult.Failed -> {
                                 Log.e(TAG, "APK güvenlik kontrolü başarısız: ${securityResult.reason}")
-                                SettingsActivity.writeDebugLog(context, "APK güvenlik kontrolü başarısız: ${securityResult.reason}")
                                 notificationManager.showUpdateCheckFailedNotification(
                                     "Güvenlik kontrolü başarısız: ${securityResult.reason}"
                                 )
@@ -148,7 +132,6 @@ class UpdateManager(private val context: Context) {
                     }
                     is DownloadResult.Error -> {
                         Log.e(TAG, "APK indirme hatası: ${downloadResult.message}")
-                        SettingsActivity.writeDebugLog(context, "APK indirme hatası: ${downloadResult.message}")
                         notificationManager.showUpdateCheckFailedNotification(
                             "İndirme başarısız: ${downloadResult.message}"
                         )

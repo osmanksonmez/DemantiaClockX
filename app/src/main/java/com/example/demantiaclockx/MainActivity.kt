@@ -452,9 +452,7 @@ class MainActivity : AppCompatActivity() {
         sendBroadcast(intent)
         Log.d("MainActivity", "Internal broadcast sent")
     }
-    
 
-    
     /**
      * Request notification permission for Android 13+
      */

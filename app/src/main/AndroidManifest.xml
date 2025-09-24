@@ -34,7 +34,6 @@
             android:exported="true"
             android:theme="@style/Theme.DemantiaClockX.Fullscreen"
             android:screenOrientation="unspecified"
-            android:configChanges="orientation|screenSize|keyboardHidden"
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
