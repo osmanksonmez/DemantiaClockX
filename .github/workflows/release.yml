@@ -27,6 +27,11 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         
+    - name: Set JAVA_HOME environment variable
+      run: |
+        echo "JAVA_HOME=$JAVA_HOME" >> $GITHUB_ENV
+        echo "Java Home: $JAVA_HOME"
+        
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
       
@@ -55,7 +60,9 @@ jobs:
         echo "VERSION_NAME=${VERSION#v}" >> $GITHUB_OUTPUT
         
     - name: Build Release APK
-      run: ./gradlew assembleRelease
+      run: |
+        echo "Building with JAVA_HOME: $JAVA_HOME"
+        ./gradlew assembleRelease -Dorg.gradle.java.home="$JAVA_HOME" --no-daemon --stacktrace
       
     - name: Rename APK
       run: |
