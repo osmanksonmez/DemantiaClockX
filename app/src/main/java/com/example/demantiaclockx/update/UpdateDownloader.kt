@@ -11,6 +11,7 @@ import android.os.Environment
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.content.FileProvider
+import com.example.demantiaclockx.SettingsActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
@@ -50,6 +51,7 @@ class UpdateDownloader(private val context: Context) {
         
         try {
             Log.d(TAG, "Starting download from: $downloadUrl")
+            SettingsActivity.writeDebugLog(context, "UpdateDownloader: İndirme başlatıldı - $downloadUrl")
             
             // İndirme bildirimi göster
             showDownloadNotification(0, version)
@@ -62,6 +64,7 @@ class UpdateDownloader(private val context: Context) {
             
             if (!response.isSuccessful) {
                 Log.e(TAG, "Download failed: ${response.code}")
+                SettingsActivity.writeDebugLog(context, "UpdateDownloader: İndirme başarısız - HTTP ${response.code}")
                 return@withContext DownloadResult.Error("İndirme başarısız: ${response.code}")
             }
             
@@ -97,15 +100,18 @@ class UpdateDownloader(private val context: Context) {
             inputStream.close()
             
             Log.d(TAG, "Download completed: ${apkFile.absolutePath}")
+            SettingsActivity.writeDebugLog(context, "UpdateDownloader: İndirme tamamlandı - ${apkFile.absolutePath}")
             
             // İndirme tamamlandı, kurulum başlat
             showInstallNotification(apkFile, version)
+            SettingsActivity.writeDebugLog(context, "UpdateDownloader: Kurulum bildirimi gösterildi")
             installApk(apkFile)
             
             return@withContext DownloadResult.Success(apkFile)
             
         } catch (e: Exception) {
             Log.e(TAG, "Download error", e)
+            SettingsActivity.writeDebugLog(context, "UpdateDownloader: İndirme hatası - ${e.message}")
             notificationManager.cancel(NOTIFICATION_ID)
             return@withContext DownloadResult.Error("İndirme hatası: ${e.message}")
         }
@@ -124,6 +130,12 @@ class UpdateDownloader(private val context: Context) {
     
     fun installApk(apkFile: File) {
         try {
+            Log.d(TAG, "Preparing APK installation for: ${apkFile.absolutePath}")
+            SettingsActivity.writeDebugLog(context, "UpdateDownloader: APK kurulumu hazırlanıyor - ${apkFile.absolutePath}")
+            
+            // Kurulum öncesi sistem kaynaklarını temizle
+            System.gc()
+            
             val intent = Intent(Intent.ACTION_VIEW)
             
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -135,22 +147,51 @@ class UpdateDownloader(private val context: Context) {
                 )
                 intent.setDataAndType(apkUri, "application/vnd.android.package-archive")
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                Log.d(TAG, "Using FileProvider URI: $apkUri")
+                SettingsActivity.writeDebugLog(context, "UpdateDownloader: FileProvider URI kullanılıyor - $apkUri")
             } else {
                 // Android 6.0 ve altı için doğrudan URI
                 intent.setDataAndType(Uri.fromFile(apkFile), "application/vnd.android.package-archive")
+                Log.d(TAG, "Using direct file URI")
+                SettingsActivity.writeDebugLog(context, "UpdateDownloader: Doğrudan dosya URI kullanılıyor")
             }
             
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            // Kurulum intent'ini başlat
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            
+            // Kurulum öncesi kısa bir bekleme ekle (grafik bağlamının temizlenmesi için)
+            Thread.sleep(500)
+            
             context.startActivity(intent)
             
-            Log.d(TAG, "Install intent started")
+            Log.d(TAG, "Install intent started successfully")
+            SettingsActivity.writeDebugLog(context, "UpdateDownloader: Kurulum intent'i başarıyla başlatıldı")
             
         } catch (e: Exception) {
             Log.e(TAG, "Error starting install", e)
+            SettingsActivity.writeDebugLog(context, "UpdateDownloader: Kurulum başlatma hatası - ${e.message}")
+            // Hata durumunda kullanıcıya bildirim göster
+            showInstallErrorNotification(e.message ?: "Bilinmeyen hata")
         }
     }
     
-    private fun createNotificationChannel() {
+    private fun showInstallErrorNotification(errorMessage: String) {
+        try {
+            val notification = NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
+                .setSmallIcon(android.R.drawable.ic_dialog_alert)
+                .setContentTitle("Kurulum Hatası")
+                .setContentText("APK kurulumu başarısız: $errorMessage")
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setAutoCancel(true)
+                .build()
+            
+            notificationManager.notify(NOTIFICATION_ID + 1, notification)
+        } catch (e: Exception) {
+             Log.e(TAG, "Error showing install error notification", e)
+         }
+     }
+     
+     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 NOTIFICATION_CHANNEL_ID,

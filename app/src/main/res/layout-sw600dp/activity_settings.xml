@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/theme_white_gray"
+    android:fillViewport="true">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="20dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnBack"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:text=""
+            app:icon="@android:drawable/ic_menu_revert"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:iconSize="20dp"
+            app:backgroundTint="@color/button_white"
+            app:iconTint="@color/primary_blue"
+            android:elevation="4dp"
+            style="@style/Widget.Material3.Button.IconButton" />
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Ayarlar"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/text_dark"
+            android:gravity="center"
+            android:layout_marginEnd="40dp" />
+
+    </LinearLayout>
+
+    <!-- Tema Seçimi Bölümü -->
+    <TextView
+        android:id="@+id/tvThemeTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tema Seçimi"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/text_dark"
+        android:layout_marginBottom="12dp" />
+
+    <!-- Tema Butonları Grid -->
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="3"
+        android:rowCount="3"
+        android:layout_marginBottom="20dp"
+        android:alignmentMode="alignBounds"
+        android:useDefaultMargins="false">
+
+        <!-- Beyaz/Gri Tema -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnThemeWhiteGray"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="4dp"
+            android:text="Beyaz/Gri"
+            android:textColor="@color/text_dark"
+            android:textSize="12sp"
+            app:backgroundTint="@color/theme_white_gray"
+            android:elevation="4dp"
+            app:cornerRadius="8dp" />
+
+        <!-- Açık Mavi Tema -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnThemeLightBlue"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="4dp"
+            android:text="Açık Mavi"
+            android:textColor="@color/text_dark"
+            android:textSize="12sp"
+            app:backgroundTint="@color/theme_light_blue"
+            android:elevation="4dp"
+            app:cornerRadius="8dp" />
+
+        <!-- Açık Sarı Tema -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnThemeLightYellow"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="4dp"
+            android:text="Açık Sarı"
+            android:textColor="@color/text_dark"
+            android:textSize="12sp"
+            app:backgroundTint="@color/theme_light_yellow"
+            android:elevation="4dp"
+            app:cornerRadius="8dp" />
+
+        <!-- Açık Yeşil Tema -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnThemeLightGreen"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="4dp"
+            android:text="Açık Yeşil"
+            android:textColor="@color/text_dark"
+            android:textSize="12sp"
+            app:backgroundTint="@color/theme_light_green"
+            android:elevation="4dp"
+            app:cornerRadius="8dp" />
+
+        <!-- Açık Pembe Tema -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnThemeLightPink"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="4dp"
+            android:text="Açık Pembe"
+            android:textColor="@color/text_dark"
+            android:textSize="12sp"
+            app:backgroundTint="@color/theme_light_pink"
+            android:elevation="4dp"
+            app:cornerRadius="8dp" />
+
+        <!-- Turuncu Tema -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnThemeOrange"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="4dp"
+            android:text="Turuncu"
+            android:textColor="@color/text_dark"
+            android:textSize="12sp"
+            app:backgroundTint="@color/accent_orange"
+            android:elevation="4dp"
+            app:cornerRadius="8dp" />
+
+        <!-- Kırmızı Tema -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnThemeRed"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="4dp"
+            android:text="Kırmızı"
+            android:textColor="@color/text_light"
+            android:textSize="12sp"
+            app:backgroundTint="@color/theme_red"
+            android:elevation="4dp"
+            app:cornerRadius="8dp" />
+
+        <!-- Navy Blue Tema -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnThemeNavyBlue"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="4dp"
+            android:text="Navy Blue"
+            android:textColor="@color/text_light"
+            android:textSize="12sp"
+            app:backgroundTint="@color/theme_navy_blue"
+            android:elevation="4dp"
+            app:cornerRadius="8dp" />
+
+        <!-- Siyah Tema -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnThemeBlack"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="4dp"
+            android:text="Siyah"
+            android:textColor="@color/text_light"
+            android:textSize="12sp"
+            app:backgroundTint="@color/theme_black"
+            android:elevation="4dp"
+            app:cornerRadius="8dp" />
+
+    </GridLayout>
+
+    <!-- Güncelleme Ayarları Bölümü -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Güncelleme Ayarları"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/text_dark"
+        android:layout_marginBottom="12dp" />
+
+    <!-- Güncelleme Butonları -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="16dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCheckUpdate"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="8dp"
+            android:text="Güncelleme Kontrol Et"
+            android:textSize="12sp"
+            app:backgroundTint="@color/theme_light_blue"
+            app:cornerRadius="8dp"
+            android:elevation="4dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnForceUpdate"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:text="Zorla Güncelle"
+            android:textSize="12sp"
+            app:backgroundTint="@color/accent_orange"
+            app:cornerRadius="8dp"
+            android:elevation="4dp" />
+
+    </LinearLayout>
+
+    <!-- Otomatik Güncelleme Switch -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="20dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Otomatik Güncelleme"
+            android:textSize="16sp"
+            android:textColor="@color/text_dark" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/switchAutoUpdate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true" />
+
+    </LinearLayout>
+
+    <!-- Debug Logları Bölümü -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Debug Logları"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/text_dark"
+        android:layout_marginBottom="12dp" />
+
+    <!-- Debug Log Butonları -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="12dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnShowLogs"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="8dp"
+            android:text="Logları Göster"
+            android:textSize="12sp"
+            app:backgroundTint="@color/theme_light_green"
+            app:cornerRadius="8dp"
+            android:elevation="4dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnClearLogs"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:text="Logları Temizle"
+            android:textSize="12sp"
+            app:backgroundTint="@color/theme_red"
+            app:cornerRadius="8dp"
+            android:elevation="4dp" />
+
+    </LinearLayout>
+
+    <!-- Log Görüntüleme Alanı -->
+    <ScrollView
+        android:id="@+id/scrollViewLogs"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginBottom="16dp"
+        android:background="@android:color/black"
+        android:padding="8dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tvLogs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="@android:color/white"
+            android:textSize="10sp"
+            android:fontFamily="monospace"
+            android:textIsSelectable="true" />
+
+    </ScrollView>
+
+</LinearLayout>
+
+</ScrollView>

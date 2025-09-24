@@ -10,6 +10,9 @@ import android.os.PowerManager
 import android.provider.Settings
 import android.net.Uri
 import android.os.Bundle
+import android.os.Build
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import java.util.concurrent.TimeUnit
@@ -19,7 +22,6 @@ import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import com.example.demantiaclockx.databinding.ActivityMainBinding
 import com.example.demantiaclockx.update.UpdateManager
 import kotlinx.coroutines.CoroutineScope
@@ -65,6 +67,11 @@ class MainActivity : AppCompatActivity() {
         
         // UpdateManager'ı başlat
         updateManager = UpdateManager.getInstance(this)
+        
+
+        
+        // Request notification permission for Android 13+
+        requestNotificationPermission()
         
         // ViewBinding
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -112,10 +119,25 @@ class MainActivity : AppCompatActivity() {
             android.util.Log.d("DemantiaClockX", "Test button clicked - Testing BootReceiver")
             testBootReceiver()
         }
+        
+        // Update Test butonu listener'ı - Update kontrolünü test et
+        binding.btnUpdateTest?.setOnClickListener {
+            android.util.Log.d("DemantiaClockX", "Update Test button clicked - Testing update check and broadcast receiver")
+            testUpdateCheck()
+            // Also test the broadcast receiver
+            Handler(Looper.getMainLooper()).postDelayed({
+                testBroadcastReceiver()
+            }, 2000) // Wait 2 seconds before testing broadcast receiver
+        }
     }
 
     override fun onResume() {
         super.onResume()
+        android.util.Log.d("DemantiaClockX", "onResume: starting clock updates")
+        
+        // Tam ekran modunu yeniden etkinleştir
+        enableFullscreen()
+        
         // Tema değişikliği olabilir, yeniden uygula
         applyTheme()
         handler.post(tick)
@@ -129,13 +151,33 @@ class MainActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
+        android.util.Log.d("DemantiaClockX", "onPause: stopping clock updates")
+        handler.removeCallbacks(tick)
+    }
+    
+    override fun onStop() {
+        super.onStop()
+        android.util.Log.d("DemantiaClockX", "onStop: cleaning up resources")
         handler.removeCallbacks(tick)
     }
     
     override fun onDestroy() {
         super.onDestroy()
-        // Güncelleme kontrolünü durdur
-        updateManager.stopPeriodicUpdateCheck()
+        android.util.Log.d("DemantiaClockX", "onDestroy: final cleanup")
+        
+        try {
+            // Handler callback'lerini temizle
+            handler.removeCallbacks(tick)
+            
+            // Window flags'leri temizle
+            window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+            
+            // Güncelleme kontrolünü durdur
+            updateManager.stopPeriodicUpdateCheck()
+            
+        } catch (e: Exception) {
+            Log.e("MainActivity", "Error during cleanup", e)
+        }
     }
 
     private fun applyToggleState() {
@@ -203,16 +245,16 @@ class MainActivity : AppCompatActivity() {
         findViewById<android.widget.TextView>(R.id.tvDate2Analog)?.text = dateText
         findViewById<android.widget.TextView>(R.id.tvTimeOfDayAnalog)?.text = timeOfDayText
         
-        // Debug log
-        android.util.Log.d("DemantiaClockX", "Clock updated: $timeText, $dateText, $timeOfDayText")
-        android.util.Log.d("DemantiaClockX", "Digital TextView visibilities - tvDate: ${binding.tvDate.visibility}, tvTime: ${binding.tvTime.visibility}, tvTimeOfDay: ${binding.tvTimeOfDay.visibility}, tvDate2: ${binding.tvDate2.visibility}")
+        // Debug log - commented out to reduce log noise
+        // android.util.Log.d("DemantiaClockX", "Clock updated: $timeText, $dateText, $timeOfDayText")
+        // android.util.Log.d("DemantiaClockX", "Digital TextView visibilities - tvDate: ${binding.tvDate.visibility}, tvTime: ${binding.tvTime.visibility}, tvTimeOfDay: ${binding.tvTimeOfDay.visibility}, tvDate2: ${binding.tvDate2.visibility}")
         
-        // Analog elementleri findViewById ile log
-        val tvDateAnalog = findViewById<android.widget.TextView>(R.id.tvDateAnalog)
-        val tvTimeAnalog = findViewById<android.widget.TextView>(R.id.tvTimeAnalog)
-        val tvTimeOfDayAnalog = findViewById<android.widget.TextView>(R.id.tvTimeOfDayAnalog)
-        val tvDate2Analog = findViewById<android.widget.TextView>(R.id.tvDate2Analog)
-        android.util.Log.d("DemantiaClockX", "Analog TextView visibilities - tvDateAnalog: ${tvDateAnalog?.visibility}, tvTimeAnalog: ${tvTimeAnalog?.visibility}, tvTimeOfDayAnalog: ${tvTimeOfDayAnalog?.visibility}, tvDate2Analog: ${tvDate2Analog?.visibility}")
+        // Analog elementleri findViewById ile log - commented out to reduce log noise
+        // val tvDateAnalog = findViewById<android.widget.TextView>(R.id.tvDateAnalog)
+        // val tvTimeAnalog = findViewById<android.widget.TextView>(R.id.tvTimeAnalog)
+        // val tvTimeOfDayAnalog = findViewById<android.widget.TextView>(R.id.tvTimeOfDayAnalog)
+        // val tvDate2Analog = findViewById<android.widget.TextView>(R.id.tvDate2Analog)
+        // android.util.Log.d("DemantiaClockX", "Analog TextView visibilities - tvDateAnalog: ${tvDateAnalog?.visibility}, tvTimeAnalog: ${tvTimeAnalog?.visibility}, tvTimeOfDayAnalog: ${tvTimeOfDayAnalog?.visibility}, tvDate2Analog: ${tvDate2Analog?.visibility}")
     }
 
     private fun timeOfDayLabel(): String {
@@ -263,18 +305,31 @@ class MainActivity : AppCompatActivity() {
     }
     
     private fun enableFullscreen() {
-        // Ekranı sürekli açık tut
-        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        
-        // Tam ekran için sistem UI'sini gizle
-        window.decorView.systemUiVisibility = (
-            View.SYSTEM_UI_FLAG_FULLSCREEN or
-            View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or
-            View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY or
-            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
-            View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
-            View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-        )
+        try {
+            // Ekranı sürekli açık tut
+            window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+            
+            // Tam ekran için sistem UI'sini gizle
+            window.decorView.systemUiVisibility = (
+                View.SYSTEM_UI_FLAG_FULLSCREEN or
+                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or
+                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY or
+                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+                View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+            )
+            
+            Log.d("MainActivity", "Fullscreen mode enabled successfully")
+            
+        } catch (e: Exception) {
+            Log.e("MainActivity", "Error enabling fullscreen mode", e)
+            // Hata durumunda basit tam ekran moduna geç
+            try {
+                window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+            } catch (fallbackError: Exception) {
+                Log.e("MainActivity", "Fallback fullscreen also failed", fallbackError)
+            }
+        }
     }
     
     private fun enableAutoStart() {
@@ -357,6 +412,70 @@ class MainActivity : AppCompatActivity() {
             }
         } catch (e: Exception) {
             Log.e("MainActivity", "Battery optimization check failed: ${e.message}", e)
+        }
+    }
+    
+    /**
+     * Test update check manually
+     */
+    private fun testUpdateCheck() {
+        Log.d("MainActivity", "Manual update check triggered")
+        Toast.makeText(this, "Güncelleme kontrolü başlatılıyor...", Toast.LENGTH_SHORT).show()
+        
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                Log.d("MainActivity", "Calling updateManager.checkForUpdatesManually()")
+                updateManager.checkForUpdatesManually()
+            } catch (e: Exception) {
+                Log.e("MainActivity", "Error during manual update check", e)
+                runOnUiThread {
+                    Toast.makeText(this@MainActivity, "Güncelleme kontrolü hatası: ${e.message}", Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+    }
+    
+    /**
+     * Test broadcast receiver internally
+     */
+    private fun testBroadcastReceiver() {
+        Log.d("MainActivity", "Testing UpdateBroadcastReceiver internally")
+        
+        val intent = Intent("com.example.demantiaclockx.UPDATE_ACTION").apply {
+            putExtra("version", "2.1.0")
+            putExtra("downloadUrl", "https://example.com/internal-test.apk")
+            putExtra("releaseNotes", "Internal broadcast test")
+            setPackage(packageName) // Ensure it stays within our app
+        }
+        
+        Log.d("MainActivity", "Sending internal broadcast...")
+        sendBroadcast(intent)
+        Log.d("MainActivity", "Internal broadcast sent")
+    }
+    
+
+    
+    /**
+     * Request notification permission for Android 13+
+     */
+    private fun requestNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    android.Manifest.permission.POST_NOTIFICATIONS
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                Log.d("MainActivity", "Requesting notification permission...")
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(android.Manifest.permission.POST_NOTIFICATIONS),
+                    1001
+                )
+            } else {
+                Log.d("MainActivity", "Notification permission already granted")
+            }
+        } else {
+            Log.d("MainActivity", "Android version < 13, notification permission not required")
         }
     }
 }

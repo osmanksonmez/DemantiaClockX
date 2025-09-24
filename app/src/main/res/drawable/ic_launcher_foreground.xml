@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    
+    <!-- Clock face outer circle -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:strokeColor="#E5E7EB"
+        android:strokeWidth="1"
+        android:pathData="M54,26 A28,28 0 1,1 54,82 A28,28 0 1,1 54,26 Z" />
+    
+    <!-- Hour markers -->
+    <!-- 12 o'clock -->
+    <path
+        android:fillColor="#374151"
+        android:pathData="M53,30 L55,30 L55,36 L53,36 Z" />
+    
+    <!-- 3 o'clock -->
+    <path
+        android:fillColor="#374151"
+        android:pathData="M72,53 L78,53 L78,55 L72,55 Z" />
+    
+    <!-- 6 o'clock -->
+    <path
+        android:fillColor="#374151"
+        android:pathData="M53,72 L55,72 L55,78 L53,78 Z" />
+    
+    <!-- 9 o'clock -->
+    <path
+        android:fillColor="#374151"
+        android:pathData="M30,53 L36,53 L36,55 L30,55 Z" />
+    
+    <!-- Smaller hour markers as small rectangles -->
+    <!-- 1 o'clock -->
+    <path android:fillColor="#9CA3AF" android:pathData="M63,34 L65,34 L65,36 L63,36 Z" />
+    <!-- 2 o'clock -->
+    <path android:fillColor="#9CA3AF" android:pathData="M70,42 L72,42 L72,44 L70,44 Z" />
+    <!-- 4 o'clock -->
+    <path android:fillColor="#9CA3AF" android:pathData="M70,64 L72,64 L72,66 L70,66 Z" />
+    <!-- 5 o'clock -->
+    <path android:fillColor="#9CA3AF" android:pathData="M63,72 L65,72 L65,74 L63,74 Z" />
+    <!-- 7 o'clock -->
+    <path android:fillColor="#9CA3AF" android:pathData="M43,72 L45,72 L45,74 L43,74 Z" />
+    <!-- 8 o'clock -->
+    <path android:fillColor="#9CA3AF" android:pathData="M36,64 L38,64 L38,66 L36,66 Z" />
+    <!-- 10 o'clock -->
+    <path android:fillColor="#9CA3AF" android:pathData="M36,42 L38,42 L38,44 L36,44 Z" />
+    <!-- 11 o'clock -->
+    <path android:fillColor="#9CA3AF" android:pathData="M43,34 L45,34 L45,36 L43,36 Z" />
+    
+    <!-- Clock hands -->
+    <!-- Hour hand pointing to 10 -->
+    <path
+        android:fillColor="#1F2937"
+        android:pathData="M54,54 L48,42 L50,41 L54,51 L58,41 L60,42 Z" />
+    
+    <!-- Minute hand pointing to 2 -->
+    <path
+        android:fillColor="#1F2937"
+        android:pathData="M54,54 L68,48 L69,50 L56,54 L69,58 L68,60 Z" />
+    
+    <!-- Center dot -->
+    <path
+        android:fillColor="#1F2937"
+        android:pathData="M54,51 A3,3 0 1,1 54,57 A3,3 0 1,1 54,51 Z" />
+    
+    <!-- Center highlight -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,52.5 A1.5,1.5 0 1,1 54,55.5 A1.5,1.5 0 1,1 54,52.5 Z" />
+</vector>
