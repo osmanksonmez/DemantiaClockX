@@ -66,15 +66,47 @@ class UpdateSecurityManager(private val context: Context) {
     private fun verifyApkSignature(apkFile: File): SecurityCheckResult {
         try {
             val packageManager = context.packageManager
-            val packageInfo = packageManager.getPackageArchiveInfo(
-                apkFile.absolutePath,
-                PackageManager.GET_SIGNATURES
-            ) ?: return SecurityCheckResult.Failed("APK bilgileri okunamadı")
             
-            val signatures = packageInfo.signatures
+            // Android API 28+ için yeni API kullan, eski sürümler için eski API
+            val packageInfo = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
+                packageManager.getPackageArchiveInfo(
+                    apkFile.absolutePath,
+                    PackageManager.GET_SIGNING_CERTIFICATES
+                )
+            } else {
+                @Suppress("DEPRECATION")
+                packageManager.getPackageArchiveInfo(
+                    apkFile.absolutePath,
+                    PackageManager.GET_SIGNATURES
+                )
+            }
+            
+            if (packageInfo == null) {
+                Log.e(TAG, "APK bilgileri okunamadı: ${apkFile.absolutePath}")
+                Log.e(TAG, "Dosya var mı: ${apkFile.exists()}, Okunabilir mi: ${apkFile.canRead()}")
+                Log.e(TAG, "Dosya boyutu: ${apkFile.length()} bytes")
+                return SecurityCheckResult.Failed("APK bilgileri okunamadı - dosya bozuk olabilir")
+            }
+            
+            // İmzaları al (API seviyesine göre)
+            val signatures = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
+                packageInfo.signingInfo?.let { signingInfo ->
+                    if (signingInfo.hasMultipleSigners()) {
+                        signingInfo.apkContentsSigners
+                    } else {
+                        signingInfo.signingCertificateHistory
+                    }
+                }
+            } else {
+                @Suppress("DEPRECATION")
+                packageInfo.signatures
+            }
+            
             if (signatures.isNullOrEmpty()) {
                 return SecurityCheckResult.Failed("APK imzası bulunamadı")
             }
+            
+            Log.d(TAG, "APK imza sayısı: ${signatures.size}")
             
             // Mevcut uygulama imzasını al
             val currentSignatures = getCurrentAppSignatures()
@@ -97,11 +129,12 @@ class UpdateSecurityManager(private val context: Context) {
                 }
             }
             
+            Log.d(TAG, "APK imza doğrulaması başarılı")
             return SecurityCheckResult.Passed
             
         } catch (e: Exception) {
             Log.e(TAG, "İmza doğrulama hatası", e)
-            return SecurityCheckResult.Failed("İmza doğrulama başarısız")
+            return SecurityCheckResult.Failed("İmza doğrulama başarısız: ${e.message}")
         }
     }
     
@@ -157,11 +190,35 @@ class UpdateSecurityManager(private val context: Context) {
      */
     private fun getCurrentAppSignatures(): Array<Signature> {
         return try {
-            val packageInfo = context.packageManager.getPackageInfo(
-                context.packageName,
-                PackageManager.GET_SIGNATURES
-            )
-            packageInfo.signatures ?: emptyArray()
+            // Android API 28+ için yeni API kullan, eski sürümler için eski API
+            val packageInfo = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
+                context.packageManager.getPackageInfo(
+                    context.packageName,
+                    PackageManager.GET_SIGNING_CERTIFICATES
+                )
+            } else {
+                @Suppress("DEPRECATION")
+                context.packageManager.getPackageInfo(
+                    context.packageName,
+                    PackageManager.GET_SIGNATURES
+                )
+            }
+            
+            // İmzaları al (API seviyesine göre)
+            val signatures = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
+                packageInfo.signingInfo?.let { signingInfo ->
+                    if (signingInfo.hasMultipleSigners()) {
+                        signingInfo.apkContentsSigners
+                    } else {
+                        signingInfo.signingCertificateHistory
+                    }
+                }
+            } else {
+                @Suppress("DEPRECATION")
+                packageInfo.signatures
+            }
+            
+            signatures ?: emptyArray()
         } catch (e: Exception) {
             Log.e(TAG, "Mevcut uygulama imzası alınamadı", e)
             emptyArray()
