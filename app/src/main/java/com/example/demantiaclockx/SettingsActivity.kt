@@ -47,6 +47,16 @@ class SettingsActivity : AppCompatActivity() {
         
         binding.tvTitle.text = "Ayarlar"
         binding.tvThemeTitle.text = "Tema Seçimi"
+        
+        // Versiyon bilgisini göster
+        try {
+            val packageInfo = packageManager.getPackageInfo(packageName, 0)
+            val versionName = packageInfo.versionName
+            binding.tvVersion?.text = "v$versionName"
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to get version info: ${e.message}")
+            binding.tvVersion?.text = "v1.0.10"
+        }
     }
     
     private fun setupThemeSelection() {
@@ -59,8 +69,6 @@ class SettingsActivity : AppCompatActivity() {
         binding.btnThemeLightPink.setOnClickListener { selectTheme("light_pink") }
         binding.btnThemeLightGreen?.setOnClickListener { selectTheme("light_green") }
         binding.btnThemeRed.setOnClickListener { selectTheme("red") }
-        binding.btnThemeNavyBlue.setOnClickListener { selectTheme("navy_blue") }
-        binding.btnThemeBlack.setOnClickListener { selectTheme("black") }
         
         // Mevcut temayı seçili göster
         updateSelectedTheme(currentTheme ?: DEFAULT_THEME)
@@ -69,14 +77,77 @@ class SettingsActivity : AppCompatActivity() {
     private fun setupUpdateButtons() {
         // Manuel güncelleme kontrolü butonu
         binding.btnCheckUpdate?.setOnClickListener {
-            updateManager.checkForUpdates()
+            checkForUpdatesWithFeedback()
         }
         
-        // Otomatik güncelleme switch'i
-        binding.switchAutoUpdate?.let { switch ->
-            switch.isChecked = updateManager.isAutoUpdateEnabled()
-            switch.setOnCheckedChangeListener { _, isChecked ->
-                updateManager.setAutoUpdateEnabled(isChecked)
+        // Landscape layout için alternatif buton ID'si
+        binding.btnCheckForUpdates?.setOnClickListener {
+            checkForUpdatesWithFeedback()
+        }
+    }
+    
+    private fun checkForUpdatesWithFeedback() {
+        // Kullanıcıya güncelleme kontrolünün başladığını bildir
+        Toast.makeText(this, "Güncelleme kontrol ediliyor...", Toast.LENGTH_SHORT).show()
+        
+        // Her iki butonu da geçici olarak devre dışı bırak
+        binding.btnCheckUpdate?.isEnabled = false
+        binding.btnCheckUpdate?.text = "Kontrol ediliyor..."
+        binding.btnCheckForUpdates?.isEnabled = false
+        binding.btnCheckForUpdates?.text = "Kontrol ediliyor..."
+        
+        // Güncelleme kontrolünü başlat
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val result = updateManager.checkForUpdatesManually()
+                
+                // Ana thread'de UI güncellemelerini yap
+                CoroutineScope(Dispatchers.Main).launch {
+                    // Her iki butonu da tekrar aktif et
+                    binding.btnCheckUpdate?.isEnabled = true
+                    binding.btnCheckUpdate?.text = "Güncelleme Kontrol Et"
+                    binding.btnCheckForUpdates?.isEnabled = true
+                    binding.btnCheckForUpdates?.text = "Güncelleme Kontrol Et"
+                    
+                    // Sonuca göre kullanıcıya bilgi ver
+                    when (result) {
+                        is com.example.demantiaclockx.UpdateResult.Available -> {
+                            Toast.makeText(
+                                this@SettingsActivity,
+                                "Yeni güncelleme mevcut: v${result.updateInfo.version}",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                        is com.example.demantiaclockx.UpdateResult.NoUpdate -> {
+                            Toast.makeText(
+                                this@SettingsActivity,
+                                "Uygulama zaten güncel!",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                        is com.example.demantiaclockx.UpdateResult.Error -> {
+                            Toast.makeText(
+                                this@SettingsActivity,
+                                "Güncelleme kontrolü başarısız: ${result.message}",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                // Ana thread'de hata mesajını göster
+                CoroutineScope(Dispatchers.Main).launch {
+                    binding.btnCheckUpdate?.isEnabled = true
+                    binding.btnCheckUpdate?.text = "Güncelleme Kontrol Et"
+                    binding.btnCheckForUpdates?.isEnabled = true
+                    binding.btnCheckForUpdates?.text = "Güncelleme Kontrol Et"
+                    
+                    Toast.makeText(
+                        this@SettingsActivity,
+                        "Güncelleme kontrolü sırasında hata oluştu: ${e.message}",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
             }
         }
     }
@@ -105,8 +176,6 @@ class SettingsActivity : AppCompatActivity() {
             "light_pink" -> binding.btnThemeLightPink.alpha = 0.7f
             "light_green" -> binding.btnThemeLightGreen?.let { it.alpha = 0.7f }
             "red" -> binding.btnThemeRed.alpha = 0.7f
-            "navy_blue" -> binding.btnThemeNavyBlue.alpha = 0.7f
-            "black" -> binding.btnThemeBlack.alpha = 0.7f
         }
     }
     
@@ -117,8 +186,6 @@ class SettingsActivity : AppCompatActivity() {
         binding.btnThemeLightPink.alpha = 1.0f
         binding.btnThemeLightGreen?.let { it.alpha = 1.0f }
         binding.btnThemeRed.alpha = 1.0f
-        binding.btnThemeNavyBlue.alpha = 1.0f
-        binding.btnThemeBlack.alpha = 1.0f
     }
     
     private fun applyCurrentTheme() {
@@ -129,41 +196,49 @@ class SettingsActivity : AppCompatActivity() {
                 binding.root.setBackgroundColor(ContextCompat.getColor(this, R.color.theme_white_gray))
                 binding.tvTitle.setTextColor(ContextCompat.getColor(this, R.color.text_dark))
                 binding.tvThemeTitle.setTextColor(ContextCompat.getColor(this, R.color.text_dark))
+                binding.tvVersion?.setTextColor(ContextCompat.getColor(this, R.color.text_dark))
             }
             "light_blue" -> {
                 binding.root.setBackgroundColor(ContextCompat.getColor(this, R.color.theme_light_blue))
                 binding.tvTitle.setTextColor(ContextCompat.getColor(this, R.color.text_dark))
                 binding.tvThemeTitle.setTextColor(ContextCompat.getColor(this, R.color.text_dark))
+                binding.tvVersion?.setTextColor(ContextCompat.getColor(this, R.color.text_dark))
             }
             "light_yellow" -> {
                 binding.root.setBackgroundColor(ContextCompat.getColor(this, R.color.theme_light_yellow))
                 binding.tvTitle.setTextColor(ContextCompat.getColor(this, R.color.text_dark))
                 binding.tvThemeTitle.setTextColor(ContextCompat.getColor(this, R.color.text_dark))
+                binding.tvVersion?.setTextColor(ContextCompat.getColor(this, R.color.text_dark))
             }
             "light_pink" -> {
                 binding.root.setBackgroundColor(ContextCompat.getColor(this, R.color.theme_light_pink))
                 binding.tvTitle.setTextColor(ContextCompat.getColor(this, R.color.text_dark))
                 binding.tvThemeTitle.setTextColor(ContextCompat.getColor(this, R.color.text_dark))
+                binding.tvVersion?.setTextColor(ContextCompat.getColor(this, R.color.text_dark))
             }
             "light_green" -> {
                 binding.root.setBackgroundColor(ContextCompat.getColor(this, R.color.theme_light_green))
                 binding.tvTitle.setTextColor(ContextCompat.getColor(this, R.color.text_dark))
                 binding.tvThemeTitle.setTextColor(ContextCompat.getColor(this, R.color.text_dark))
+                binding.tvVersion?.setTextColor(ContextCompat.getColor(this, R.color.text_dark))
             }
             "red" -> {
                 binding.root.setBackgroundColor(ContextCompat.getColor(this, R.color.theme_red))
                 binding.tvTitle.setTextColor(ContextCompat.getColor(this, R.color.text_light))
                 binding.tvThemeTitle.setTextColor(ContextCompat.getColor(this, R.color.text_light))
+                binding.tvVersion?.setTextColor(ContextCompat.getColor(this, R.color.text_light))
             }
             "navy_blue" -> {
                 binding.root.setBackgroundColor(ContextCompat.getColor(this, R.color.theme_navy_blue))
                 binding.tvTitle.setTextColor(ContextCompat.getColor(this, R.color.text_light))
                 binding.tvThemeTitle.setTextColor(ContextCompat.getColor(this, R.color.text_light))
+                binding.tvVersion?.setTextColor(ContextCompat.getColor(this, R.color.text_light))
             }
             "black" -> {
                 binding.root.setBackgroundColor(ContextCompat.getColor(this, R.color.theme_black))
                 binding.tvTitle.setTextColor(ContextCompat.getColor(this, R.color.text_light))
                 binding.tvThemeTitle.setTextColor(ContextCompat.getColor(this, R.color.text_light))
+                binding.tvVersion?.setTextColor(ContextCompat.getColor(this, R.color.text_light))
             }
         }
     }

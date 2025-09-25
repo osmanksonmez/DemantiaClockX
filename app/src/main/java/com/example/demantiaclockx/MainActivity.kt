@@ -120,15 +120,7 @@ class MainActivity : AppCompatActivity() {
             testBootReceiver()
         }
         
-        // Update Test butonu listener'ı - Update kontrolünü test et
-        binding.btnUpdateTest?.setOnClickListener {
-            android.util.Log.d("DemantiaClockX", "Update Test button clicked - Testing update check and broadcast receiver")
-            testUpdateCheck()
-            // Also test the broadcast receiver
-            Handler(Looper.getMainLooper()).postDelayed({
-                testBroadcastReceiver()
-            }, 2000) // Wait 2 seconds before testing broadcast receiver
-        }
+
     }
 
     override fun onResume() {
@@ -142,8 +134,7 @@ class MainActivity : AppCompatActivity() {
         applyTheme()
         handler.post(tick)
         
-        // Otomatik güncelleme kontrolünü başlat
-        updateManager.startPeriodicUpdateCheck()
+
         
         // İmza hash'ini logla (geliştirme amaçlı)
         updateManager.logCurrentSignatureHash()
