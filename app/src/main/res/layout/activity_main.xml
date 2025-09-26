@@ -175,11 +175,12 @@
                     android:text="15 Kasım 2024"
                     android:textSize="@dimen/text_size_date_large"
                     android:textColor="@android:color/white"
+                    android:textStyle="bold"
                     android:gravity="center"
                     android:layout_marginStart="8dp"
                     app:autoSizeTextType="uniform"
                     app:autoSizeMinTextSize="18sp"
-                    app:autoSizeMaxTextSize="36sp" />
+                    app:autoSizeMaxTextSize="72sp" />
 
             </LinearLayout>
 
@@ -249,10 +250,11 @@
                 android:text="15 Kasım 2024"
                 android:textSize="@dimen/text_size_date_large"
                 android:textColor="@android:color/white"
+                android:textStyle="bold"
                 android:gravity="center"
                 app:autoSizeTextType="uniform"
                 app:autoSizeMinTextSize="14sp"
-                app:autoSizeMaxTextSize="28sp" />
+                app:autoSizeMaxTextSize="72sp" />
 
         </LinearLayout>
 

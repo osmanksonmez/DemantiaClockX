@@ -4,7 +4,7 @@
     <dimen name="text_size_day_large">84sp</dimen>
     <dimen name="text_size_period_large">56sp</dimen>
     <dimen name="text_size_time_large">72sp</dimen>
-    <dimen name="text_size_date_large">32sp</dimen>
+    <dimen name="text_size_date_large">72sp</dimen>
     
     <!-- Margins and paddings -->
     <dimen name="margin_small">16dp</dimen>

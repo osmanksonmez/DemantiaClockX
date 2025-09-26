@@ -215,9 +215,9 @@ class MainActivity : AppCompatActivity() {
  
     private fun updateClock() {
         val now = Calendar.getInstance(Locale("tr", "TR")).time
-        val timeFormat = SimpleDateFormat("HH:mm:ss", Locale("tr", "TR"))
+        val timeFormat = SimpleDateFormat("HH:mm", Locale("tr", "TR"))
         val dayFormat = SimpleDateFormat("EEEE", Locale("tr", "TR"))
-        val dateFormat = SimpleDateFormat("d MMMM yyyy", Locale("tr", "TR"))
+        val dateFormat = SimpleDateFormat("d MMMM", Locale("tr", "TR"))
 
         val timeText = timeFormat.format(now)
         val dayText = dayFormat.format(now).replaceFirstChar { it.titlecase(Locale("tr", "TR")) }

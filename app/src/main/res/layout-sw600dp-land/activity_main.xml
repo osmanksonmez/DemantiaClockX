@@ -114,7 +114,7 @@
         android:gravity="center_horizontal|top"
         android:orientation="vertical"
         android:padding="8dp"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/buttonContainer"
         app:layout_constraintHorizontal_bias="0.0"
@@ -187,11 +187,12 @@
                 android:layout_marginStart="12dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="18 Eylül 2025"
+                android:text="18 Eylül"
                 android:textColor="@color/text_white"
-                android:textSize="36sp"
-                app:autoSizeMaxTextSize="50sp"
-                app:autoSizeMinTextSize="25sp"
+                android:textSize="75sp"
+                app:autoSizeMaxTextSize="90sp"
+                app:autoSizeMinTextSize="75sp"
+                android:textStyle="bold"
                 app:autoSizeTextType="uniform" />
 
         </LinearLayout>
@@ -206,7 +207,7 @@
         android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
         android:orientation="vertical"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical"
@@ -259,9 +260,9 @@
             android:layout_marginBottom="16dp"
             android:gravity="center"
             android:padding="8dp"
-            android:text="18 Eylül 2025"
+            android:text="18 Eylül"
             android:textColor="@color/text_white"
-            android:textSize="50sp" />
+            android:textSize="70sp" />
 
     </LinearLayout>
 

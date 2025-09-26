@@ -138,6 +138,7 @@
             android:text="18 Eylül 2025"
             android:textColor="@color/text_white"
             android:textSize="50sp"
+            android:textStyle="bold"
             app:autoSizeMaxTextSize="50sp"
             app:autoSizeMinTextSize="35sp"
             app:autoSizeTextType="uniform" />
