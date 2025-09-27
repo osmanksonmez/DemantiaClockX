@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/theme_white_gray"
-    android:fillViewport="true">
+    android:background="@color/theme_white_gray">
+
+<ScrollView
+    android:id="@+id/scrollView"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    android:fillViewport="true"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintBottom_toTopOf="@+id/buttonContainer"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent">
 
 <LinearLayout
     android:layout_width="match_parent"
@@ -49,156 +58,306 @@
 
     </LinearLayout>
 
+    <!-- Tab Layout -->
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        app:tabMode="fixed"
+        app:tabGravity="fill"
+        app:tabSelectedTextColor="@color/primary_blue"
+        app:tabTextColor="@color/text_dark"
+        app:tabIndicatorColor="@color/primary_blue"
+        app:tabBackground="@color/theme_white_gray">
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tema" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hatırlatma" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Güncelleme" />
+
+    </com.google.android.material.tabs.TabLayout>
+
     <!-- Tema Seçimi Bölümü -->
-    <TextView
-        android:id="@+id/tvThemeTitle"
+    <LinearLayout
+        android:id="@+id/themeSection"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Tema Seçimi"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:textColor="@color/text_dark"
-        android:layout_marginBottom="12dp" />
+        android:orientation="vertical"
+        android:visibility="gone">
 
-    <!-- Tema Butonları Grid -->
-    <GridLayout
+        <TextView
+            android:id="@+id/tvThemeTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:text="Tema Seçimi"
+            android:textColor="@color/text_dark"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <!-- Tema Butonları Grid -->
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:alignmentMode="alignBounds"
+            android:columnCount="3"
+            android:rowCount="3"
+            android:useDefaultMargins="false">
+
+            <!-- Beyaz/Gri Tema -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnThemeWhiteGray"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_columnWeight="1"
+                android:layout_margin="4dp"
+                android:elevation="4dp"
+                android:text="Beyaz/Gri"
+                android:textColor="@color/text_dark"
+                android:textSize="12sp"
+                app:backgroundTint="@color/theme_white_gray"
+                app:cornerRadius="8dp" />
+
+            <!-- Açık Mavi Tema -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnThemeLightBlue"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_columnWeight="1"
+                android:layout_margin="4dp"
+                android:elevation="4dp"
+                android:text="Açık Mavi"
+                android:textColor="@color/text_dark"
+                android:textSize="12sp"
+                app:backgroundTint="@color/theme_light_blue"
+                app:cornerRadius="8dp" />
+
+            <!-- Açık Sarı Tema -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnThemeLightYellow"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_columnWeight="1"
+                android:layout_margin="4dp"
+                android:elevation="4dp"
+                android:text="Açık Sarı"
+                android:textColor="@color/text_dark"
+                android:textSize="12sp"
+                app:backgroundTint="@color/theme_light_yellow"
+                app:cornerRadius="8dp" />
+
+            <!-- Açık Yeşil Tema -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnThemeLightGreen"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_columnWeight="1"
+                android:layout_margin="4dp"
+                android:elevation="4dp"
+                android:text="Açık Yeşil"
+                android:textColor="@color/text_dark"
+                android:textSize="12sp"
+                app:backgroundTint="@color/theme_light_green"
+                app:cornerRadius="8dp" />
+
+            <!-- Açık Pembe Tema -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnThemeLightPink"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_columnWeight="1"
+                android:layout_margin="4dp"
+                android:elevation="4dp"
+                android:text="Açık Pembe"
+                android:textColor="@color/text_dark"
+                android:textSize="12sp"
+                app:backgroundTint="@color/theme_light_pink"
+                app:cornerRadius="8dp" />
+
+            <!-- Turuncu Tema -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnThemeOrange"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_columnWeight="1"
+                android:layout_margin="4dp"
+                android:elevation="4dp"
+                android:text="Turuncu"
+                android:textColor="@color/text_dark"
+                android:textSize="12sp"
+                app:backgroundTint="@color/accent_orange"
+                app:cornerRadius="8dp" />
+
+            <!-- Kırmızı Tema -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnThemeRed"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_columnWeight="1"
+                android:layout_margin="4dp"
+                android:elevation="4dp"
+                android:text="Kırmızı"
+                android:textColor="@color/text_light"
+                android:textSize="12sp"
+                app:backgroundTint="@color/theme_red"
+                app:cornerRadius="8dp" />
+
+
+
+        </GridLayout>
+
+    </LinearLayout>
+
+    <!-- Hatırlatma Ayarları Bölümü -->
+    <LinearLayout
+        android:id="@+id/reminderSection"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:columnCount="3"
-        android:rowCount="3"
-        android:layout_marginBottom="20dp"
-        android:alignmentMode="alignBounds"
-        android:useDefaultMargins="false">
+        android:orientation="vertical"
+        android:visibility="visible">
 
-        <!-- Beyaz/Gri Tema -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnThemeWhiteGray"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_columnWeight="1"
-            android:layout_margin="4dp"
-            android:text="Beyaz/Gri"
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:text="Hatırlatma Ayarları"
             android:textColor="@color/text_dark"
-            android:textSize="12sp"
-            app:backgroundTint="@color/theme_white_gray"
-            android:elevation="4dp"
-            app:cornerRadius="8dp" />
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
-        <!-- Açık Mavi Tema -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnThemeLightBlue"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_columnWeight="1"
-            android:layout_margin="4dp"
-            android:text="Açık Mavi"
+        <!-- Hatırlatma Metni Girişi -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:hint="Hatırlatma Metni">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etReminderText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Örn: Diyaliz"
+                android:textColor="@color/text_dark"
+                android:maxLines="1" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Günler Seçimi -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="Hatırlatma Günleri"
             android:textColor="@color/text_dark"
-            android:textSize="12sp"
-            app:backgroundTint="@color/theme_light_blue"
-            android:elevation="4dp"
-            app:cornerRadius="8dp" />
+            android:textSize="14sp" />
 
-        <!-- Açık Sarı Tema -->
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:alignmentMode="alignBounds"
+            android:columnCount="4"
+            android:rowCount="2">
+
+            <CheckBox
+                android:id="@+id/cbMonday"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="2dp"
+                android:text="Pzt"
+                android:textSize="12sp" />
+
+            <CheckBox
+                android:id="@+id/cbTuesday"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="2dp"
+                android:text="Sal"
+                android:textSize="12sp" />
+
+            <CheckBox
+                android:id="@+id/cbWednesday"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="2dp"
+                android:text="Çar"
+                android:textSize="12sp" />
+
+            <CheckBox
+                android:id="@+id/cbThursday"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="2dp"
+                android:text="Per"
+                android:textSize="12sp" />
+
+            <CheckBox
+                android:id="@+id/cbFriday"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="2dp"
+                android:text="Cum"
+                android:textSize="12sp" />
+
+            <CheckBox
+                android:id="@+id/cbSaturday"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="2dp"
+                android:text="Cmt"
+                android:textSize="12sp" />
+
+            <CheckBox
+                android:id="@+id/cbSunday"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="2dp"
+                android:text="Paz"
+                android:textSize="12sp" />
+
+        </GridLayout>
+
+        <!-- Hatırlatma Kaydet Butonu -->
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnThemeLightYellow"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_columnWeight="1"
-            android:layout_margin="4dp"
-            android:text="Açık Sarı"
-            android:textColor="@color/text_dark"
-            android:textSize="12sp"
-            app:backgroundTint="@color/theme_light_yellow"
+            android:id="@+id/btnSaveReminder"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginBottom="24dp"
             android:elevation="4dp"
+            android:text="Hatırlatmayı Kaydet"
+            android:textSize="14sp"
+            app:backgroundTint="@color/primary_blue"
             app:cornerRadius="8dp" />
 
-        <!-- Açık Yeşil Tema -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnThemeLightGreen"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_columnWeight="1"
-            android:layout_margin="4dp"
-            android:text="Açık Yeşil"
-            android:textColor="@color/text_dark"
-            android:textSize="12sp"
-            app:backgroundTint="@color/theme_light_green"
-            android:elevation="4dp"
-            app:cornerRadius="8dp" />
-
-        <!-- Açık Pembe Tema -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnThemeLightPink"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_columnWeight="1"
-            android:layout_margin="4dp"
-            android:text="Açık Pembe"
-            android:textColor="@color/text_dark"
-            android:textSize="12sp"
-            app:backgroundTint="@color/theme_light_pink"
-            android:elevation="4dp"
-            app:cornerRadius="8dp" />
-
-        <!-- Turuncu Tema -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnThemeOrange"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_columnWeight="1"
-            android:layout_margin="4dp"
-            android:text="Turuncu"
-            android:textColor="@color/text_dark"
-            android:textSize="12sp"
-            app:backgroundTint="@color/accent_orange"
-            android:elevation="4dp"
-            app:cornerRadius="8dp" />
-
-        <!-- Kırmızı Tema -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnThemeRed"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_columnWeight="1"
-            android:layout_margin="4dp"
-            android:text="Kırmızı"
-            android:textColor="@color/text_light"
-            android:textSize="12sp"
-            app:backgroundTint="@color/theme_red"
-            android:elevation="4dp"
-            app:cornerRadius="8dp" />
-
-        <!-- Navy Blue Tema -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnThemeNavyBlue"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_columnWeight="1"
-            android:layout_margin="4dp"
-            android:text="Navy Blue"
-            android:textColor="@color/text_light"
-            android:textSize="12sp"
-            app:backgroundTint="@color/theme_navy_blue"
-            android:elevation="4dp"
-            app:cornerRadius="8dp" />
-
-        <!-- Siyah Tema -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnThemeBlack"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_columnWeight="1"
-            android:layout_margin="4dp"
-            android:text="Siyah"
-            android:textColor="@color/text_light"
-            android:textSize="12sp"
-            app:backgroundTint="@color/theme_black"
-            android:elevation="4dp"
-            app:cornerRadius="8dp" />
-
-    </GridLayout>
+    </LinearLayout>
 
     <!-- Güncelleme Ayarları Bölümü -->
+    <LinearLayout
+        android:id="@+id/updateSection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -245,4 +404,19 @@
 
 </LinearLayout>
 
+    </LinearLayout>
+
 </ScrollView>
+
+<!-- Bottom Button Container -->
+<LinearLayout
+    android:id="@+id/buttonContainer"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_marginEnd="16dp"
+    android:layout_marginBottom="16dp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

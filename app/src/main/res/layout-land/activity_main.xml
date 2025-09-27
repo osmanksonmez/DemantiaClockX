@@ -8,24 +8,24 @@
     android:keepScreenOn="true"
     android:background="@color/background_blue">
 
-    <!-- Sağ taraf buton container - dikey yerleşim -->
+    <!-- Alt taraf buton container - yatay yerleşim -->
     <LinearLayout
         android:id="@+id/buttonContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:gravity="center"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp">
+        android:layout_marginBottom="16dp">
 
         <!-- Settings butonu -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSettings"
             android:layout_width="56dp"
             android:layout_height="56dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="16dp"
             android:text=""
             android:clickable="true"
             android:focusable="true"
@@ -44,7 +44,6 @@
             android:id="@+id/btnToggle"
             android:layout_width="56dp"
             android:layout_height="56dp"
-            android:layout_marginBottom="8dp"
             android:text=""
             android:clickable="true"
             android:focusable="true"
@@ -57,8 +56,6 @@
             android:elevation="8dp"
             app:elevation="8dp"
             style="@style/Widget.Material3.Button.IconButton" />
-
-
 
     </LinearLayout>
 
@@ -87,17 +84,33 @@
         android:id="@+id/digitalLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:orientation="vertical"
+        android:layout_marginEnd="8dp"
         android:gravity="center_horizontal|top"
+        android:orientation="vertical"
         android:paddingStart="16dp"
-        android:paddingEnd="16dp"
         android:paddingTop="8dp"
+        android:paddingEnd="16dp"
         android:paddingBottom="16dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/buttonContainer"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical"
-        app:layout_constraintEnd_toStartOf="@+id/buttonContainer"
-        android:layout_marginEnd="8dp">
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!-- Bugün yazısı -->
+        <TextView
+            android:id="@+id/tvToday"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.8"
+            android:gravity="center"
+            android:text="Bugün"
+            android:textColor="@color/text_black"
+            android:textSize="48sp"
+            android:textStyle="bold"
+            app:autoSizeMaxTextSize="64sp"
+            app:autoSizeMinTextSize="32sp"
+            app:autoSizeTextType="uniform" />
 
         <!-- 1. tvDate - Haftanın günü -->
         <TextView
@@ -105,169 +118,162 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:text="Cuma"
-            android:textSize="@dimen/text_size_day_large"
-            android:textColor="@android:color/white"
-            android:textStyle="bold"
             android:gravity="center"
-            app:autoSizeTextType="uniform"
+            android:text="Cuma"
+            android:textColor="@color/text_black"
+            android:textSize="@dimen/text_size_day_large"
+            android:textStyle="bold"
+            app:autoSizeMaxTextSize="64sp"
             app:autoSizeMinTextSize="24sp"
-            app:autoSizeMaxTextSize="64sp" />
+            app:autoSizeTextType="uniform" />
 
         <!-- 2. tvTimeOfDay - Günün saati -->
-        <TextView
-            android:id="@+id/tvTimeOfDay"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:text="gece"
-            android:textSize="@dimen/text_size_period_large"
-            android:textColor="@android:color/white"
-            android:gravity="center"
-            app:autoSizeTextType="uniform"
-            app:autoSizeMinTextSize="18sp"
-            app:autoSizeMaxTextSize="42sp" />
-
-        <!-- 3. Saat ve Tarih - Aynı satırda -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="2"
+            android:layout_weight="1"
             android:orientation="horizontal"
             android:gravity="center">
 
-            <!-- tvTime - Saat -->
             <TextView
-                android:id="@+id/tvTime"
-                android:layout_width="0dp"
+                android:id="@+id/tvTimeOfDay"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="02:15"
-                android:textSize="@dimen/text_size_time_large"
-                android:textColor="@android:color/white"
-                android:textStyle="bold"
                 android:gravity="center"
-                android:layout_marginEnd="8dp"
-                app:autoSizeTextType="uniform"
-                app:autoSizeMinTextSize="32sp"
-                app:autoSizeMaxTextSize="72sp" />
-
-            <!-- tvDate2 - Tarih -->
-            <TextView
-                android:id="@+id/tvDate2"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="15 Kasım 2024"
-                android:textSize="@dimen/text_size_date_large"
-                android:textColor="@android:color/white"
-                android:textStyle="bold"
-                android:gravity="center"
-                android:layout_marginStart="8dp"
-                app:autoSizeTextType="uniform"
+                android:text="gece"
+                android:textColor="@color/text_black"
+                android:textSize="@dimen/text_size_period_large"
+                app:autoSizeMaxTextSize="42sp"
                 app:autoSizeMinTextSize="18sp"
-                app:autoSizeMaxTextSize="72sp" />
+                app:autoSizeTextType="uniform" />
+
+            <!-- Hatırlatma TextView -->
+            <TextView
+                android:id="@+id/tvReminder"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="16dp"
+                android:gravity="center"
+                android:text=""
+                android:textColor="#FF0000"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                android:visibility="gone"
+                app:autoSizeMaxTextSize="36sp"
+                app:autoSizeMinTextSize="24sp"
+                app:autoSizeTextType="uniform" />
 
         </LinearLayout>
+
+        <!-- 3. tvTime - Saat (tek satır) -->
+        <TextView
+            android:id="@+id/tvTime"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="16dp"
+            android:layout_weight="1.5"
+            android:gravity="center"
+            android:text="12:34"
+            android:textColor="@color/text_black"
+            android:textSize="70sp"
+            android:textStyle="bold"
+            app:autoSizeMaxTextSize="80sp"
+            app:autoSizeMinTextSize="50sp"
+            app:autoSizeTextType="uniform" />
+
+        <!-- 4. tvDate2 - Tarih (tek satır) -->
+        <TextView
+            android:id="@+id/tvDate2"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="15 Kasım 2024"
+            android:textColor="@color/text_black"
+            android:textSize="50sp"
+            android:textStyle="bold"
+            app:autoSizeMaxTextSize="60sp"
+            app:autoSizeMinTextSize="40sp"
+            app:autoSizeTextType="uniform" />
 
     </LinearLayout>
 
     <!-- Analog elementler container - başlangıçta gizli -->
     <LinearLayout
         android:id="@+id/analogElements"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="297dp"
+        android:layout_height="356dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="1dp"
         android:orientation="vertical"
-        android:visibility="gone"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/buttonContainer"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toTopOf="parent">
 
-        <!-- Üst satır -->
-        <LinearLayout
+
+        <!-- Sol üst: Haftanın günü (Analog) -->
+        <TextView
+            android:id="@+id/tvDateAnalog"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <!-- Sol üst: Haftanın günü (Analog) -->
-            <TextView
-                android:id="@+id/tvDateAnalog"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="Cuma"
-                android:textSize="@dimen/text_size_day_large"
-                android:textColor="@android:color/white"
-                android:textStyle="bold"
-                android:gravity="start|center_vertical"
-                android:paddingStart="@dimen/margin_medium"
-                android:paddingTop="@dimen/margin_small"
-                app:autoSizeTextType="uniform"
-                app:autoSizeMinTextSize="24sp"
-                app:autoSizeMaxTextSize="64sp" />
-
-            <!-- Sağ üst: Saat (Analog) -->
-            <TextView
-                android:id="@+id/tvTimeAnalog"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="02:15"
-                android:textSize="@dimen/text_size_time_large"
-                android:textColor="@android:color/white"
-                android:textStyle="bold"
-                android:gravity="end|center_vertical"
-                android:paddingEnd="@dimen/margin_medium"
-                android:paddingTop="@dimen/margin_small"
-                app:autoSizeTextType="uniform"
-                app:autoSizeMinTextSize="28sp"
-                app:autoSizeMaxTextSize="56sp" />
-
-        </LinearLayout>
-
-        <!-- Alt satır -->
-        <LinearLayout
+            android:gravity="center"
+            android:padding="4dp"
+            android:text="Cuma"
+            android:textColor="@color/text_black"
+            android:textSize="38sp"
+            android:textStyle="bold"
+            app:autoSizeMaxTextSize="64sp"
+            app:autoSizeMinTextSize="54sp"
+            app:autoSizeTextType="uniform" />
+        <!-- Sol alt: Günün saati (Analog) -->
+        <TextView
+            android:id="@+id/tvTimeOfDayAnalog"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="gece"
+            android:textColor="@color/text_black"
+            android:textSize="38sp"
+            app:autoSizeMaxTextSize="42sp"
+            app:autoSizeMinTextSize="38sp"
+            app:autoSizeTextType="uniform" />
 
-            <!-- Sol alt: Günün saati (Analog) -->
-            <TextView
-                android:id="@+id/tvTimeOfDayAnalog"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="gece"
-                android:textSize="@dimen/text_size_period_large"
-                android:textColor="@android:color/white"
-                android:gravity="start|center_vertical"
-                android:paddingStart="@dimen/margin_medium"
-                android:paddingBottom="@dimen/margin_small"
-                app:autoSizeTextType="uniform"
-                app:autoSizeMinTextSize="18sp"
-                app:autoSizeMaxTextSize="42sp" />
 
-            <!-- Sağ alt: Tarih (Analog) -->
-            <TextView
-                android:id="@+id/tvDate2Analog"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="15 Kasım 2024"
-                android:textSize="@dimen/text_size_date_large"
-                android:textColor="@android:color/white"
-                android:textStyle="bold"
-                android:gravity="end|center_vertical"
-                android:paddingEnd="@dimen/margin_medium"
-                android:paddingBottom="@dimen/margin_small"
-                app:autoSizeTextType="uniform"
-                app:autoSizeMinTextSize="14sp"
-                app:autoSizeMaxTextSize="72sp" />
+        <!-- Sağ üst: Saat (Analog) -->
+        <TextView
+            android:id="@+id/tvTimeAnalog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="02:15"
+            android:textColor="@color/text_black"
+            android:textSize="@dimen/text_size_time_large"
+            android:textStyle="bold"
+            app:autoSizeMaxTextSize="56sp"
+            app:autoSizeMinTextSize="28sp"
+            app:autoSizeTextType="uniform" />
 
-        </LinearLayout>
+        <!-- Sağ alt: Tarih (Analog) -->
+        <TextView
+            android:id="@+id/tvDate2Analog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="15 Kasım"
+            android:textColor="@color/text_black"
+            android:textSize="34dp"
+            android:textStyle="bold"
+            app:autoSizeMaxTextSize="72sp"
+            app:autoSizeMinTextSize="34sp"
+            app:autoSizeTextType="uniform" />
+
 
     </LinearLayout>
 

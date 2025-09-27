@@ -22,6 +22,7 @@
     <!-- Vurgu renkleri -->
     <color name="accent_yellow">#FFFFC107</color>       <!-- Sarı - dikkat çekici -->
     <color name="accent_orange">#FFFF9800</color>       <!-- Turuncu - sıcak -->
+    <color name="red">#FFD32F2F</color>                 <!-- Kırmızı - hatırlatma -->
     
     <!-- Buton renkleri -->
     <color name="button_blue">#FF1565C0</color>         <!-- Mavi buton -->
@@ -32,9 +33,11 @@
     <!-- Tema renkleri -->
     <color name="theme_white_gray">#FFF5F5F5</color>    <!-- Beyaz/Gri tema -->
     <color name="theme_light_blue">#FFE3F2FD</color>    <!-- Açık mavi tema -->
+    <color name="theme_blue">#FF1565C0</color>          <!-- Mavi tema -->
     <color name="theme_light_yellow">#FFFFF9C4</color>  <!-- Açık sarı tema -->
     <color name="theme_light_pink">#FFFCE4EC</color>    <!-- Açık pembe tema -->
     <color name="theme_light_green">#FFE8F5E8</color>   <!-- Açık yeşil tema -->
+    <color name="theme_green">#FF4CAF50</color>         <!-- Yeşil tema -->
     <color name="theme_red">#FFD32F2F</color>           <!-- Kırmızı tema -->
     <color name="theme_navy_blue">#FF0D47A1</color>     <!-- Navy blue tema -->
     <color name="theme_black">#FF212121</color>         <!-- Siyah tema -->

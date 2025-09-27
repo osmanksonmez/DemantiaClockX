@@ -23,6 +23,8 @@ class SettingsActivity : AppCompatActivity() {
         const val PREFS_NAME = "DemantiaClockPrefs"
         const val THEME_KEY = "selected_theme"
         const val DEFAULT_THEME = "white_gray"
+        const val REMINDER_TEXT_KEY = "reminder_text"
+        const val REMINDER_DAYS_KEY = "reminder_days"
         private const val TAG = "SettingsActivity"
     }
     
@@ -35,8 +37,10 @@ class SettingsActivity : AppCompatActivity() {
         updateManager = UpdateManager(this)
         
         setupUI()
+        setupTabLayout()
         setupThemeSelection()
         setupUpdateButtons()
+        setupReminderSettings()
         applyCurrentTheme()
     }
     
@@ -57,6 +61,78 @@ class SettingsActivity : AppCompatActivity() {
             Log.e(TAG, "Failed to get version info: ${e.message}")
             binding.tvVersion?.text = "v1.0.10"
         }
+    }
+    
+    private fun setupTabLayout() {
+        // İlk tab'ı (Tema) seçili olarak başlat
+        showThemeSection()
+        updateTabSelection(0)
+        
+        // Vertical tab butonları için click listener'lar
+        binding.tabTheme?.setOnClickListener {
+            showThemeSection()
+            updateTabSelection(0)
+        }
+        
+        binding.tabReminder?.setOnClickListener {
+            showReminderSection()
+            updateTabSelection(1)
+        }
+        
+        binding.tabUpdate?.setOnClickListener {
+            showUpdateSection()
+            updateTabSelection(2)
+        }
+    }
+    
+    private fun updateTabSelection(selectedIndex: Int) {
+        // Tüm tab butonlarını varsayılan duruma getir
+        binding.tabTheme?.apply {
+            setTextColor(ContextCompat.getColor(this@SettingsActivity, R.color.text_dark))
+            backgroundTintList = ContextCompat.getColorStateList(this@SettingsActivity, android.R.color.white)
+        }
+        binding.tabReminder?.apply {
+            setTextColor(ContextCompat.getColor(this@SettingsActivity, R.color.text_dark))
+            backgroundTintList = ContextCompat.getColorStateList(this@SettingsActivity, android.R.color.white)
+        }
+        binding.tabUpdate?.apply {
+            setTextColor(ContextCompat.getColor(this@SettingsActivity, R.color.text_dark))
+            backgroundTintList = ContextCompat.getColorStateList(this@SettingsActivity, android.R.color.white)
+        }
+        
+        // Seçili tab'ı vurgula
+        when (selectedIndex) {
+            0 -> binding.tabTheme?.apply {
+                setTextColor(ContextCompat.getColor(this@SettingsActivity, R.color.primary_blue))
+                backgroundTintList = ContextCompat.getColorStateList(this@SettingsActivity, R.color.theme_light_blue)
+            }
+            1 -> binding.tabReminder?.apply {
+                setTextColor(ContextCompat.getColor(this@SettingsActivity, R.color.primary_blue))
+                backgroundTintList = ContextCompat.getColorStateList(this@SettingsActivity, R.color.theme_light_blue)
+            }
+            2 -> binding.tabUpdate?.apply {
+                setTextColor(ContextCompat.getColor(this@SettingsActivity, R.color.primary_blue))
+                backgroundTintList = ContextCompat.getColorStateList(this@SettingsActivity, R.color.theme_light_blue)
+            }
+        }
+    }
+    
+    private fun showThemeSection() {
+        binding.themeSection?.visibility = android.view.View.VISIBLE
+        binding.reminderSection?.visibility = android.view.View.GONE
+        binding.updateSection?.visibility = android.view.View.GONE
+    }
+    
+    private fun showReminderSection() {
+        binding.themeSection?.visibility = android.view.View.GONE
+        binding.reminderSection?.visibility = android.view.View.VISIBLE
+        binding.updateSection?.visibility = android.view.View.GONE
+    }
+    
+    private fun showUpdateSection() {
+        binding.themeSection?.visibility = android.view.View.GONE
+        binding.reminderSection?.visibility = android.view.View.GONE
+        binding.updateSection?.visibility = android.view.View.VISIBLE
     }
     
     private fun setupThemeSelection() {
@@ -86,6 +162,73 @@ class SettingsActivity : AppCompatActivity() {
         }
     }
     
+    private fun setupReminderSettings() {
+        // Mevcut ayarları yükle
+        loadReminderSettings()
+        
+        // Checkbox'lar için listener'lar
+        binding.cbMonday?.setOnCheckedChangeListener { _, _ -> saveReminderSettings() }
+        binding.cbTuesday?.setOnCheckedChangeListener { _, _ -> saveReminderSettings() }
+        binding.cbWednesday?.setOnCheckedChangeListener { _, _ -> saveReminderSettings() }
+        binding.cbThursday?.setOnCheckedChangeListener { _, _ -> saveReminderSettings() }
+        binding.cbFriday?.setOnCheckedChangeListener { _, _ -> saveReminderSettings() }
+        binding.cbSaturday?.setOnCheckedChangeListener { _, _ -> saveReminderSettings() }
+        binding.cbSunday?.setOnCheckedChangeListener { _, _ -> saveReminderSettings() }
+        
+        // EditText için listener
+        binding.etReminderText?.addTextChangedListener(object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: android.text.Editable?) {
+                saveReminderSettings()
+            }
+        })
+        
+        binding.etReminderText?.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) {
+                saveReminderSettings()
+            }
+        }
+    }
+    
+    private fun loadReminderSettings() {
+        // Hatırlatma metnini yükle
+        val reminderText = sharedPreferences.getString(REMINDER_TEXT_KEY, "")
+        binding.etReminderText?.setText(reminderText)
+        
+        // Seçili günleri yükle
+        val selectedDays = sharedPreferences.getStringSet(REMINDER_DAYS_KEY, emptySet()) ?: emptySet()
+        
+        binding.cbMonday?.isChecked = selectedDays.contains("monday")
+        binding.cbTuesday?.isChecked = selectedDays.contains("tuesday")
+        binding.cbWednesday?.isChecked = selectedDays.contains("wednesday")
+        binding.cbThursday?.isChecked = selectedDays.contains("thursday")
+        binding.cbFriday?.isChecked = selectedDays.contains("friday")
+        binding.cbSaturday?.isChecked = selectedDays.contains("saturday")
+        binding.cbSunday?.isChecked = selectedDays.contains("sunday")
+    }
+    
+    private fun saveReminderSettings() {
+        // Hatırlatma metnini kaydet
+        val reminderText = binding.etReminderText?.text.toString() ?: ""
+        
+        // Seçili günleri topla
+        val selectedDays = mutableSetOf<String>()
+        if (binding.cbMonday?.isChecked == true) selectedDays.add("monday")
+        if (binding.cbTuesday?.isChecked == true) selectedDays.add("tuesday")
+        if (binding.cbWednesday?.isChecked == true) selectedDays.add("wednesday")
+        if (binding.cbThursday?.isChecked == true) selectedDays.add("thursday")
+        if (binding.cbFriday?.isChecked == true) selectedDays.add("friday")
+        if (binding.cbSaturday?.isChecked == true) selectedDays.add("saturday")
+        if (binding.cbSunday?.isChecked == true) selectedDays.add("sunday")
+        
+        // SharedPreferences'a kaydet
+        sharedPreferences.edit()
+            .putString(REMINDER_TEXT_KEY, reminderText)
+            .putStringSet(REMINDER_DAYS_KEY, selectedDays)
+            .apply()
+    }
+
     private fun checkForUpdatesWithFeedback() {
         // Kullanıcıya güncelleme kontrolünün başladığını bildir
         Toast.makeText(this, "Güncelleme kontrol ediliyor...", Toast.LENGTH_SHORT).show()

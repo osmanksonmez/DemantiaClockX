@@ -8,24 +8,26 @@
     android:keepScreenOn="true"
     android:background="@color/background_blue">
 
-    <!-- Sağ taraf buton container - dikey yerleşim -->
+    <!-- Alt taraf buton container - yatay yerleşim -->
     <LinearLayout
         android:id="@+id/buttonContainer"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center"
-        app:layout_constraintTop_toTopOf="parent"
+        android:orientation="horizontal"
+        android:gravity="end"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp">
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp">
 
         <!-- Settings butonu -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSettings"
             android:layout_width="56dp"
             android:layout_height="56dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
             android:text=""
             android:clickable="true"
             android:focusable="true"
@@ -44,7 +46,6 @@
             android:id="@+id/btnToggle"
             android:layout_width="56dp"
             android:layout_height="56dp"
-            android:layout_marginBottom="8dp"
             android:text=""
             android:clickable="true"
             android:focusable="true"
@@ -74,26 +75,28 @@
         android:paddingTop="32dp"
         android:paddingEnd="32dp"
         android:paddingBottom="32dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/buttonContainer"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/buttonContainer"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
+        <!-- Bugün yazısı -->
 
         <!-- 1. tvDate - Haftanın günü (tek satır) -->
         <TextView
             android:id="@+id/tvDate"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="4dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Çarşamba"
-            android:textColor="@color/text_white"
-            android:textSize="70sp"
+            android:text="Cumartesi"
+            android:textColor="@color/text_black"
+            android:textSize="110sp"
             android:textStyle="bold"
-            app:autoSizeMaxTextSize="80sp"
-            app:autoSizeMinTextSize="60sp"
+            app:autoSizeMaxTextSize="120sp"
+            app:autoSizeMinTextSize="100sp"
             app:autoSizeTextType="uniform" />
 
         <!-- 2. tvTimeOfDay - Günün saati (tek satır) -->
@@ -101,15 +104,15 @@
             android:id="@+id/tvTimeOfDay"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="4dp"
             android:layout_weight="1"
             android:gravity="center"
             android:text="Sabah"
-            android:textColor="@color/text_white"
-            android:textSize="70sp"
+            android:textColor="@color/text_black"
+            android:textSize="90sp"
             android:textStyle="bold"
-            app:autoSizeMaxTextSize="80sp"
-            app:autoSizeMinTextSize="60sp"
+            app:autoSizeMaxTextSize="100sp"
+            app:autoSizeMinTextSize="90sp"
             app:autoSizeTextType="uniform" />
 
         <!-- 3. tvTime - Saat (tek satır) -->
@@ -117,11 +120,10 @@
             android:id="@+id/tvTime"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginBottom="16dp"
-            android:layout_weight="1.5"
+            android:layout_weight="1"
             android:gravity="center"
             android:text="12:34"
-            android:textColor="@color/text_white"
+            android:textColor="@color/text_black"
             android:textSize="100sp"
             android:textStyle="bold"
             app:autoSizeMaxTextSize="100sp"
@@ -135,12 +137,28 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="18 Eylül 2025"
-            android:textColor="@color/text_white"
-            android:textSize="50sp"
+            android:text="18 Eylül"
+            android:textColor="@color/text_black"
+            android:textSize="100sp"
             android:textStyle="bold"
-            app:autoSizeMaxTextSize="50sp"
-            app:autoSizeMinTextSize="35sp"
+            app:autoSizeMaxTextSize="100sp"
+            app:autoSizeMinTextSize="55sp"
+            app:autoSizeTextType="uniform" />
+
+        <!-- 5. tvReminder - Hatırlatma (tek satır) -->
+        <TextView
+            android:id="@+id/tvReminder"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Diyaliz"
+            android:textColor="@color/red"
+            android:textSize="80sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:autoSizeMaxTextSize="80sp"
+            app:autoSizeMinTextSize="40sp"
             app:autoSizeTextType="uniform" />
 
     </LinearLayout>
@@ -158,8 +176,8 @@
         android:paddingEnd="32dp"
         android:paddingBottom="32dp"
         android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/buttonContainer"
+        app:layout_constraintBottom_toTopOf="@+id/buttonContainer"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -193,15 +211,15 @@
                 android:id="@+id/tvDateAnalog"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="4dp"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="Çarşamba"
-                android:textColor="@color/text_white"
-                android:textSize="50sp"
+                android:textColor="@color/text_black"
+                android:textSize="70sp"
                 android:textStyle="bold"
-                app:autoSizeMaxTextSize="80sp"
-                app:autoSizeMinTextSize="30sp"
+                app:autoSizeMaxTextSize="90sp"
+                app:autoSizeMinTextSize="60sp"
                 app:autoSizeTextType="uniform" />
 
             <!-- tvTimeOfDay - Günün saati -->
@@ -209,15 +227,15 @@
                 android:id="@+id/tvTimeOfDayAnalog"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="4dp"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="Sabah"
-                android:textColor="@color/text_white"
-                android:textSize="40sp"
+                android:textColor="@color/text_black"
+                android:textSize="50sp"
                 android:textStyle="bold"
-                app:autoSizeMaxTextSize="60sp"
-                app:autoSizeMinTextSize="25sp"
+                app:autoSizeMaxTextSize="90sp"
+                app:autoSizeMinTextSize="45sp"
                 app:autoSizeTextType="uniform" />
 
             <!-- tvDate2 - Tarih -->
@@ -227,11 +245,28 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="18 Eylül 2025"
-                android:textColor="@color/text_white"
+                android:text="18 Eylül"
+                android:textColor="@color/text_black"
                 android:textSize="35sp"
-                app:autoSizeMaxTextSize="45sp"
-                app:autoSizeMinTextSize="20sp"
+                android:textStyle="bold"
+                app:autoSizeMaxTextSize="75sp"
+                app:autoSizeMinTextSize="40sp"
+                app:autoSizeTextType="uniform" />
+
+            <!-- tvReminderAnalog - Hatırlatma -->
+            <TextView
+                android:id="@+id/tvReminderAnalog"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Diyaliz"
+                android:textColor="@color/red"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                android:visibility="gone"
+                app:autoSizeMaxTextSize="60sp"
+                app:autoSizeMinTextSize="25sp"
                 app:autoSizeTextType="uniform" />
 
         </LinearLayout>

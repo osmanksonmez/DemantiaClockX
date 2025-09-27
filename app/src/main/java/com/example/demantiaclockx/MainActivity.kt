@@ -42,6 +42,8 @@ class MainActivity : AppCompatActivity() {
         const val PREFS_NAME = "DemantiaClockPrefs"
         const val THEME_KEY = "selected_theme"
         const val DEFAULT_THEME = "white_gray"
+        const val REMINDER_TEXT_KEY = "reminder_text"
+        const val REMINDER_DAYS_KEY = "reminder_days"
     }
 
     private val tick = object : Runnable {
@@ -236,6 +238,9 @@ class MainActivity : AppCompatActivity() {
         findViewById<android.widget.TextView>(R.id.tvDate2Analog)?.text = dateText
         findViewById<android.widget.TextView>(R.id.tvTimeOfDayAnalog)?.text = timeOfDayText
         
+        // Hatırlatma kontrolü
+        updateReminderDisplay()
+        
         // Debug log - commented out to reduce log noise
         // android.util.Log.d("DemantiaClockX", "Clock updated: $timeText, $dateText, $timeOfDayText")
         // android.util.Log.d("DemantiaClockX", "Digital TextView visibilities - tvDate: ${binding.tvDate.visibility}, tvTime: ${binding.tvTime.visibility}, tvTimeOfDay: ${binding.tvTimeOfDay.visibility}, tvDate2: ${binding.tvDate2.visibility}")
@@ -256,6 +261,48 @@ class MainActivity : AppCompatActivity() {
             in 14..17 -> getString(R.string.afternoon)  // İkindi
             in 18..21 -> getString(R.string.evening)    // Akşam
             else -> getString(R.string.night)           // Gece
+        }
+    }
+    
+    private fun updateReminderDisplay() {
+        // Bugünün gününü al
+        val calendar = Calendar.getInstance()
+        val dayOfWeek = when (calendar.get(Calendar.DAY_OF_WEEK)) {
+            Calendar.MONDAY -> "monday"
+            Calendar.TUESDAY -> "tuesday"
+            Calendar.WEDNESDAY -> "wednesday"
+            Calendar.THURSDAY -> "thursday"
+            Calendar.FRIDAY -> "friday"
+            Calendar.SATURDAY -> "saturday"
+            Calendar.SUNDAY -> "sunday"
+            else -> ""
+        }
+        
+        // Hatırlatma ayarlarını kontrol et
+        val selectedDays = sharedPreferences.getStringSet(REMINDER_DAYS_KEY, emptySet()) ?: emptySet()
+        val reminderText = sharedPreferences.getString(REMINDER_TEXT_KEY, "") ?: ""
+        
+        // Bugün seçili günlerden biri mi ve hatırlatma metni var mı kontrol et
+        val shouldShowReminder = selectedDays.contains(dayOfWeek) && reminderText.isNotEmpty()
+        
+        // Dijital mod için hatırlatma TextView'ını güncelle
+        binding.tvReminder?.let { reminderView ->
+            if (shouldShowReminder) {
+                reminderView.text = reminderText
+                reminderView.visibility = View.VISIBLE
+            } else {
+                reminderView.visibility = View.GONE
+            }
+        }
+        
+        // Analog mod için hatırlatma TextView'ını güncelle
+        findViewById<android.widget.TextView>(R.id.tvReminderAnalog)?.let { reminderView ->
+            if (shouldShowReminder) {
+                reminderView.text = reminderText
+                reminderView.visibility = View.VISIBLE
+            } else {
+                reminderView.visibility = View.GONE
+            }
         }
     }
     
