@@ -116,11 +116,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
         
-        // Test butonu listener'ı - BootReceiver'ı test et
-        binding.btnTest?.setOnClickListener {
-            android.util.Log.d("DemantiaClockX", "Test button clicked - Testing BootReceiver")
-            testBootReceiver()
-        }
+
         
 
     }
@@ -191,10 +187,10 @@ class MainActivity : AppCompatActivity() {
                 android.util.Log.d("DemantiaClockX", "Analog mode (SW600dp): analogLayout visibility = ${analogLayout.visibility}, digitalLayout visibility = ${binding.digitalLayout?.visibility}")
             } else {
                 // Diğer layout'lar - eski sistem
-                binding.analogClock.visibility = android.view.View.VISIBLE
+                binding.analogClock?.visibility = android.view.View.VISIBLE
                 binding.digitalLayout?.visibility = android.view.View.GONE
                 analogElements?.visibility = android.view.View.VISIBLE
-                android.util.Log.d("DemantiaClockX", "Analog mode (other): analogClock visibility = ${binding.analogClock.visibility}, digitalLayout visibility = ${binding.digitalLayout?.visibility}, analogElements visibility = ${analogElements?.visibility}")
+                android.util.Log.d("DemantiaClockX", "Analog mode (other): analogClock visibility = ${binding.analogClock?.visibility ?: "null"}, digitalLayout visibility = ${binding.digitalLayout?.visibility}, analogElements visibility = ${analogElements?.visibility ?: "null"}")
             }
         } else {
             // Dijital modda: sadece dijital elementler görünür, analog layout/saat ve analog elementler gizlenir
@@ -205,10 +201,10 @@ class MainActivity : AppCompatActivity() {
                 android.util.Log.d("DemantiaClockX", "Digital mode (SW600dp): analogLayout visibility = ${analogLayout.visibility}, digitalLayout visibility = ${binding.digitalLayout?.visibility}")
             } else {
                 // Diğer layout'lar - eski sistem
-                binding.analogClock.visibility = android.view.View.GONE
+                binding.analogClock?.visibility = android.view.View.GONE
                 binding.digitalLayout?.visibility = android.view.View.VISIBLE
                 analogElements?.visibility = android.view.View.GONE
-                android.util.Log.d("DemantiaClockX", "Digital mode (other): analogClock visibility = ${binding.analogClock.visibility}, digitalLayout visibility = ${binding.digitalLayout?.visibility}, analogElements visibility = ${analogElements?.visibility}")
+                android.util.Log.d("DemantiaClockX", "Digital mode (other): analogClock visibility = ${binding.analogClock?.visibility ?: "null"}, digitalLayout visibility = ${binding.digitalLayout?.visibility}, analogElements visibility = ${analogElements?.visibility ?: "null"}")
             }
         }
     }
@@ -229,14 +225,17 @@ class MainActivity : AppCompatActivity() {
         // Dijital elementleri güncelle
         binding.tvTime.text = timeText
         binding.tvDate.text = dayText
-        binding.tvDate2.text = dateText
-        binding.tvTimeOfDay.text = timeOfDayText
+        binding.tvDate2?.text = dateText
+        binding.tvTimeOfDay?.text = timeOfDayText
+        
+        // Tablet landscape için tvDay elementini güncelle
+        findViewById<android.widget.TextView>(R.id.tvDay)?.let { it.text = dayText.uppercase(Locale("tr", "TR")) }
         
         // Analog elementleri findViewById ile güncelle
-        findViewById<android.widget.TextView>(R.id.tvTimeAnalog)?.text = timeText
-        findViewById<android.widget.TextView>(R.id.tvDateAnalog)?.text = dayText
-        findViewById<android.widget.TextView>(R.id.tvDate2Analog)?.text = dateText
-        findViewById<android.widget.TextView>(R.id.tvTimeOfDayAnalog)?.text = timeOfDayText
+        findViewById<android.widget.TextView>(R.id.tvTimeAnalog)?.let { it.text = timeText }
+        findViewById<android.widget.TextView>(R.id.tvDateAnalog)?.let { it.text = dayText }
+        findViewById<android.widget.TextView>(R.id.tvDate2Analog)?.let { it.text = dateText }
+        findViewById<android.widget.TextView>(R.id.tvTimeOfDayAnalog)?.let { it.text = timeOfDayText }
         
         // Hatırlatma kontrolü
         updateReminderDisplay()
@@ -330,14 +329,17 @@ class MainActivity : AppCompatActivity() {
         // Dijital elementler
         binding.tvTime.setTextColor(textColorValue)
         binding.tvDate.setTextColor(textColorValue)
-        binding.tvDate2.setTextColor(textColorValue)
-        binding.tvTimeOfDay.setTextColor(textColorValue)
+        binding.tvDate2?.setTextColor(textColorValue)
+        binding.tvTimeOfDay?.setTextColor(textColorValue)
+        
+        // Tablet landscape için tvDay elementi
+        findViewById<android.widget.TextView>(R.id.tvDay)?.let { it.setTextColor(textColorValue) }
         
         // Analog elementler
-        findViewById<android.widget.TextView>(R.id.tvTimeAnalog)?.setTextColor(textColorValue)
-        findViewById<android.widget.TextView>(R.id.tvDateAnalog)?.setTextColor(textColorValue)
-        findViewById<android.widget.TextView>(R.id.tvDate2Analog)?.setTextColor(textColorValue)
-        findViewById<android.widget.TextView>(R.id.tvTimeOfDayAnalog)?.setTextColor(textColorValue)
+        findViewById<android.widget.TextView>(R.id.tvTimeAnalog)?.let { it.setTextColor(textColorValue) }
+        findViewById<android.widget.TextView>(R.id.tvDateAnalog)?.let { it.setTextColor(textColorValue) }
+        findViewById<android.widget.TextView>(R.id.tvDate2Analog)?.let { it.setTextColor(textColorValue) }
+        findViewById<android.widget.TextView>(R.id.tvTimeOfDayAnalog)?.let { it.setTextColor(textColorValue) }
         
         android.util.Log.d("DemantiaClockX", "Theme applied: background=$backgroundColor, text=$textColor")
     }
