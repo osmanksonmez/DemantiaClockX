@@ -32,10 +32,10 @@
     
     <!-- Tema renkleri -->
     <color name="theme_white_gray">#FFF5F5F5</color>    <!-- Beyaz/Gri tema -->
-    <color name="theme_light_blue">#FFE3F2FD</color>    <!-- Açık mavi tema -->
+    <color name="theme_light_blue">#FF1565C0</color>    <!-- Mavi tema (eski açık mavi yerine) -->
     <color name="theme_blue">#FF1565C0</color>          <!-- Mavi tema -->
     <color name="theme_light_yellow">#FFFFF9C4</color>  <!-- Açık sarı tema -->
-    <color name="theme_light_pink">#FFFCE4EC</color>    <!-- Açık pembe tema -->
+    <color name="theme_light_pink">#FF000000</color>    <!-- Siyah-beyaz tema (siyah zemin) -->
     <color name="theme_light_green">#FFE8F5E8</color>   <!-- Açık yeşil tema -->
     <color name="theme_green">#FF4CAF50</color>         <!-- Yeşil tema -->
     <color name="theme_red">#FFD32F2F</color>           <!-- Kırmızı tema -->

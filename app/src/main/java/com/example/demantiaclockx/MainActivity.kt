@@ -311,9 +311,9 @@ class MainActivity : AppCompatActivity() {
         
         val (backgroundColor, textColor) = when (selectedTheme) {
             "white_gray" -> Pair(R.color.theme_white_gray, R.color.text_dark)
-            "light_blue" -> Pair(R.color.theme_light_blue, R.color.text_dark)
+            "light_blue" -> Pair(R.color.theme_light_blue, R.color.text_light)
             "light_yellow" -> Pair(R.color.theme_light_yellow, R.color.text_dark)
-            "light_pink" -> Pair(R.color.theme_light_pink, R.color.text_dark)
+            "light_pink" -> Pair(R.color.theme_light_pink, R.color.text_light)
             "red" -> Pair(R.color.theme_red, R.color.text_dark)
             "navy_blue" -> Pair(R.color.theme_navy_blue, R.color.text_light)
             "black" -> Pair(R.color.theme_black, R.color.text_light)

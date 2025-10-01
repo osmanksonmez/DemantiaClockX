@@ -139,7 +139,7 @@
                 android:layout_margin="4dp"
                 android:elevation="4dp"
                 android:text="Açık Mavi"
-                android:textColor="@color/text_dark"
+                android:textColor="@color/text_white"
                 android:textSize="12sp"
                 app:backgroundTint="@color/theme_light_blue"
                 app:cornerRadius="8dp" />
@@ -180,7 +180,7 @@
                 android:layout_columnWeight="1"
                 android:layout_margin="4dp"
                 android:elevation="4dp"
-                android:text="Açık Pembe"
+                android:text="Siyah-Beyaz"
                 android:textColor="@color/text_dark"
                 android:textSize="12sp"
                 app:backgroundTint="@color/theme_light_pink"

@@ -17,13 +17,12 @@
         android:textSize="160sp"
         android:textColor="@color/text_white"
         android:fontFamily="sans-serif-black"
-        android:letterSpacing="0.05"
+        android:letterSpacing="0.35"
         android:elevation="4dp"
+        android:layout_marginTop="60dp"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/tvDay"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintVertical_chainStyle="packed" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- Haftanın günü - Çok büyük -->
     <TextView
@@ -36,7 +35,7 @@
         android:fontFamily="sans-serif-medium"
         android:letterSpacing="0.35"
         android:elevation="4dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="0dp"
         app:layout_constraintTop_toBottomOf="@+id/tvTime"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"

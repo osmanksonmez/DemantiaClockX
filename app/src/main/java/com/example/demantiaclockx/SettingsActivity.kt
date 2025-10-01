@@ -103,15 +103,15 @@ class SettingsActivity : AppCompatActivity() {
         // Seçili tab'ı vurgula
         when (selectedIndex) {
             0 -> binding.tabTheme?.apply {
-                setTextColor(ContextCompat.getColor(this@SettingsActivity, R.color.primary_blue))
+                setTextColor(ContextCompat.getColor(this@SettingsActivity, R.color.text_light))
                 backgroundTintList = ContextCompat.getColorStateList(this@SettingsActivity, R.color.theme_light_blue)
             }
             1 -> binding.tabReminder?.apply {
-                setTextColor(ContextCompat.getColor(this@SettingsActivity, R.color.primary_blue))
+                setTextColor(ContextCompat.getColor(this@SettingsActivity, R.color.text_light))
                 backgroundTintList = ContextCompat.getColorStateList(this@SettingsActivity, R.color.theme_light_blue)
             }
             2 -> binding.tabUpdate?.apply {
-                setTextColor(ContextCompat.getColor(this@SettingsActivity, R.color.primary_blue))
+                setTextColor(ContextCompat.getColor(this@SettingsActivity, R.color.text_light))
                 backgroundTintList = ContextCompat.getColorStateList(this@SettingsActivity, R.color.theme_light_blue)
             }
         }
@@ -355,9 +355,9 @@ class SettingsActivity : AppCompatActivity() {
             }
             "light_pink" -> {
                 binding.root.setBackgroundColor(ContextCompat.getColor(this, R.color.theme_light_pink))
-                binding.tvTitle.setTextColor(ContextCompat.getColor(this, R.color.text_dark))
-                binding.tvThemeTitle.setTextColor(ContextCompat.getColor(this, R.color.text_dark))
-                binding.tvVersion?.setTextColor(ContextCompat.getColor(this, R.color.text_dark))
+                binding.tvTitle.setTextColor(ContextCompat.getColor(this, R.color.text_light))
+                binding.tvThemeTitle.setTextColor(ContextCompat.getColor(this, R.color.text_light))
+                binding.tvVersion?.setTextColor(ContextCompat.getColor(this, R.color.text_light))
             }
             "light_green" -> {
                 binding.root.setBackgroundColor(ContextCompat.getColor(this, R.color.theme_light_green))
