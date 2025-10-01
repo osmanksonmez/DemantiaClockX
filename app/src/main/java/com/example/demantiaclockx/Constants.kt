@@ -10,7 +10,7 @@ object Constants {
      * Her versiyon güncellemesinde sadece bu değeri değiştirin
      * Not: build.gradle.kts dosyasındaki versionName ile senkronize tutun
      */
-    const val APP_VERSION = "1.5"
+    const val APP_VERSION = "1.6"
     
     /**
      * Versiyon bilgisini "v" prefix'i ile birlikte döndürür
