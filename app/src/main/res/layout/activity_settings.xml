@@ -231,6 +231,7 @@
 
     <!-- Hatırlatma Ayarları Kartı -->
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/reminderSection"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
