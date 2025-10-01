@@ -110,10 +110,18 @@ class MainActivity : AppCompatActivity() {
         android.util.Log.d("DemantiaClockX", "Toggle button listener set up complete")
         
         // Settings butonu listener'ı
+        android.util.Log.d("DemantiaClockX", "Settings button is null: ${binding.btnSettings == null}")
         binding.btnSettings?.setOnClickListener {
             android.util.Log.d("DemantiaClockX", "Settings button clicked")
-            val intent = Intent(this, SettingsActivity::class.java)
-            startActivity(intent)
+            try {
+                android.util.Log.d("DemantiaClockX", "Creating intent for SettingsActivity")
+                val intent = Intent(this, SettingsActivity::class.java)
+                android.util.Log.d("DemantiaClockX", "Intent created, starting activity")
+                startActivity(intent)
+                android.util.Log.d("DemantiaClockX", "startActivity called successfully")
+            } catch (e: Exception) {
+                android.util.Log.e("DemantiaClockX", "Error starting SettingsActivity: ${e.message}", e)
+            }
         }
         
 
@@ -482,7 +490,7 @@ class MainActivity : AppCompatActivity() {
         Log.d("MainActivity", "Testing UpdateBroadcastReceiver internally")
         
         val intent = Intent("com.example.demantiaclockx.UPDATE_ACTION").apply {
-            putExtra("version", "2.1.0")
+            putExtra("version", Constants.APP_VERSION)
             putExtra("downloadUrl", "https://example.com/internal-test.apk")
             putExtra("releaseNotes", "Internal broadcast test")
             setPackage(packageName) // Ensure it stays within our app

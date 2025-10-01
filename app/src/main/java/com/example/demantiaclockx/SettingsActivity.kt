@@ -29,9 +29,11 @@ class SettingsActivity : AppCompatActivity() {
     }
     
     override fun onCreate(savedInstanceState: Bundle?) {
+        Log.d(TAG, "*** SettingsActivity onCreate STARTED ***")
         super.onCreate(savedInstanceState)
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        Log.d(TAG, "*** SettingsActivity onCreate binding set ***")
         
         sharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         updateManager = UpdateManager(this)
@@ -53,14 +55,7 @@ class SettingsActivity : AppCompatActivity() {
         binding.tvThemeTitle.text = "Tema Seçimi"
         
         // Versiyon bilgisini göster
-        try {
-            val packageInfo = packageManager.getPackageInfo(packageName, 0)
-            val versionName = packageInfo.versionName
-            binding.tvVersion?.text = "v$versionName"
-        } catch (e: Exception) {
-            Log.e(TAG, "Failed to get version info: ${e.message}")
-            binding.tvVersion?.text = "v1.0.10"
-        }
+        binding.tvVersion?.text = Constants.getVersionWithPrefix()
     }
     
     private fun setupTabLayout() {
@@ -70,16 +65,19 @@ class SettingsActivity : AppCompatActivity() {
         
         // Vertical tab butonları için click listener'lar
         binding.tabTheme?.setOnClickListener {
+            Log.d(TAG, "Theme tab clicked")
             showThemeSection()
             updateTabSelection(0)
         }
         
         binding.tabReminder?.setOnClickListener {
+            Log.d(TAG, "Reminder tab clicked")
             showReminderSection()
             updateTabSelection(1)
         }
         
         binding.tabUpdate?.setOnClickListener {
+            Log.d(TAG, "Update tab clicked")
             showUpdateSection()
             updateTabSelection(2)
         }
@@ -118,18 +116,29 @@ class SettingsActivity : AppCompatActivity() {
     }
     
     private fun showThemeSection() {
+        Log.d(TAG, "showThemeSection called")
         binding.themeSection?.visibility = android.view.View.VISIBLE
         binding.reminderSection?.visibility = android.view.View.GONE
         binding.updateSection?.visibility = android.view.View.GONE
     }
     
     private fun showReminderSection() {
+        Log.d(TAG, "showReminderSection called")
+        Log.d(TAG, "reminderSection is null: ${binding.reminderSection == null}")
+        Log.d(TAG, "themeSection is null: ${binding.themeSection == null}")
+        Log.d(TAG, "updateSection is null: ${binding.updateSection == null}")
+        
         binding.themeSection?.visibility = android.view.View.GONE
         binding.reminderSection?.visibility = android.view.View.VISIBLE
         binding.updateSection?.visibility = android.view.View.GONE
+        
+        Log.d(TAG, "After setting visibility - reminderSection visibility: ${binding.reminderSection?.visibility}")
+        Log.d(TAG, "After setting visibility - themeSection visibility: ${binding.themeSection?.visibility}")
+        Log.d(TAG, "After setting visibility - updateSection visibility: ${binding.updateSection?.visibility}")
     }
     
     private fun showUpdateSection() {
+        Log.d(TAG, "showUpdateSection called")
         binding.themeSection?.visibility = android.view.View.GONE
         binding.reminderSection?.visibility = android.view.View.GONE
         binding.updateSection?.visibility = android.view.View.VISIBLE

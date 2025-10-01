@@ -11,7 +11,7 @@ android {
         applicationId = "com.example.demantiaclockx"
         minSdk = 21
         targetSdk = 36
-        versionCode = 15
+        versionCode = 16
         versionName = "1.5"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
